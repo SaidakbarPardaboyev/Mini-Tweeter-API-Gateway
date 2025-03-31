@@ -1,0 +1,9 @@
+[submodule "eld_protos"]
+	path = eld_protos
+	url = git@gitlab.udevs.io:eld/eld_protos.git
+[submodule "TaklifnomaVIP_protos"]
+	path = TaklifnomaVIP_protos
+	url = https://github.com/SaidakbarPardaboyev/TaklifnomaVIP_protos
+[submodule "Mini-Tweeter-Protocol-Buffer"]
+	path = Mini-Tweeter-Protocol-Buffer
+	url = https://github.com/SaidakbarPardaboyev/Mini-Tweeter-Protocol-Buffer

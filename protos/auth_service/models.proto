@@ -1,0 +1,46 @@
+syntax="proto3";
+
+package auth_service;
+option go_package ="genproto/auth_service";
+ 
+
+
+message Empty {
+}
+
+message Id {
+    string id = 1;
+    string slug = 2;
+    string user_id = 3;
+    map<string, string> extra = 4;
+}
+
+message GetListFilter {
+    int32 page = 1;
+    int32 limit = 2;
+    bool is_deleted = 3;
+    repeated Filters filters = 4;
+    repeated SortBy sorts = 5;
+    map<string, string> extra = 6;
+}
+
+message Filters {
+    string field = 1;
+    string type = 2;
+    string value = 3;
+}
+
+message SortBy {
+    string field = 1;
+    string type = 2;
+}
+
+message GetByIdsRequest {
+    repeated string ids = 1;
+    repeated string slug = 2;
+}
+
+message UpdateStatusRequest {
+    repeated string ids = 1;
+    string status = 2;
+}

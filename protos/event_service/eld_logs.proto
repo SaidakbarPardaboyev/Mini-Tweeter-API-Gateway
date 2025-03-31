@@ -1,0 +1,318 @@
+syntax="proto3";
+
+package event_service;
+option go_package ="genproto/event_service";
+ 
+import "event_models.proto";
+
+message Coordinates {
+    double lat = 1;
+    double lng = 2;
+}
+
+message Address {
+    string address = 1;
+    string state = 2;
+    Coordinates coordinates = 3;
+    Coordinates eld_coordinates = 4;
+    Coordinates gps_coordinates = 5;
+    Coordinates fused_coordinates = 6;
+}
+
+message Log {
+    string id = 1;
+    int64 increment_id = 2;
+    int32 event_type = 3;
+    int32 event_code = 4;
+    int32 origin_code  = 5;
+    string company_id = 6;
+    string unit_id = 7;
+    string driver_id = 8;
+    string co_driver_id = 9;
+    Address address = 10;
+    float odometer = 11;
+    float engine_hours = 12;
+    string eld_address = 13;
+    string vin_number = 14;
+    string status = 15;
+    string creator = 16;
+    string trailer = 17;
+    string note = 18;
+    string shipping_document = 19;
+    bool is_locked = 20;
+    string driver_sign = 21;
+    string certify_time = 22;
+    string start_time = 23;
+    string end_time = 24;
+    string created_at = 25;
+    string updated_at = 26;
+    string unit_number = 27;
+    repeated string cycles = 28;
+    repeated string shifts = 29;
+    repeated string violations = 30;
+    int32 speed = 31;
+    string debug_data = 32;
+}
+
+
+message UpdateLog {
+    Log log = 1;
+    string edit_by = 2;
+    string type = 3;
+    string assigned_from_driver_id = 4;
+    string assigned_to_driver_id = 5;
+}
+
+message CertifyLogRequest {
+    repeated Log log = 1;   
+}
+
+message LogListResponse {
+    repeated Log items = 1;
+    int32 count = 2;
+    LogForm log_form = 3;
+    CertifyLog certify_log = 4;
+    CycleList cycles = 5;
+    ShiftList shifts = 6;
+    Driver company_driver = 7;
+}
+
+message Timer {
+    int64 break = 1;
+    int64 drive = 2;
+    int64 shift = 3;
+    int64 cycle = 4;
+    int64 recap = 5;
+    string driver_id = 6;
+    string status = 7;
+}
+
+message ListTimer {
+    repeated Timer items = 1;
+    int32 count = 2;
+}
+
+message LogSingleResponse {
+    string id = 1;
+    int64 increment_id = 2;
+    int32 event_type = 3;
+    int32 event_code = 4;
+    int32 origin_code  = 5;
+    string company_id = 6;
+    Object unit = 7;
+    string driver_id = 8;
+    string co_driver_id = 9;
+    Address address = 10;
+    float odometer = 11;
+    float engine_hours = 12;
+    string eld_address = 13;
+    string vin_number = 14;
+    string status = 15;
+    string creator = 16;
+    string trailer = 17;
+    string note = 18;
+    string shipping_document = 19;
+    bool is_locked = 20;
+    string driver_sign = 21;
+    string certify_time = 22;
+    string start_time = 23;
+    string end_time = 24;
+    string created_at = 25;
+    string updated_at = 26;
+}
+
+message DirectEditRequest {
+    string id = 1;
+    int32 event_type = 2;
+    int32 event_code = 3;
+    Coordinates coordinates = 4;
+    string address = 5;
+    float odometer = 6;
+    float engine_hours = 7;
+    string note = 8;
+    string shipping_document = 9;
+    string trailer = 10;
+    bool is_locked = 11;
+    string state = 12;
+    Object unit = 13;
+    string start_time = 14;
+    string end_time = 15;
+}
+
+message LogCHangeHistory {
+    string id = 1;
+    repeated Log after_log = 2;
+    string after_date = 3;
+    string assigned_from_driver_id = 4;
+    string assigned_to_driver_id = 5;
+    repeated Log before_log = 6;
+    string date = 7;
+    string driver_id = 8;
+    string edited_by_id = 9;
+    string status = 10;
+    string type = 11;
+    string created_at = 12;
+    string updated_at = 13;
+    string before_date = 14;
+}
+
+message ListLogCHangeHistory {
+    int32 count = 1;
+    repeated LogCHangeHistory items = 2;
+}
+
+message LogForm {
+    Object driver = 1;
+    repeated Object codrivers = 2;
+    repeated Object units = 3;
+    repeated string trailers = 4;
+    repeated string shipping_documents = 5;
+    string signature = 6;
+    float distance = 7;
+    string company_address = 8;
+    string terminal_address = 9;
+}
+
+message CertifyLog {
+    string id = 1;
+    string driver_id = 2;
+    string driver_sign = 3;
+    string certify_time = 4;
+    bool is_certified = 5;
+}
+
+message DriverLogsNdays {
+    string id = 1;
+    string start_time = 2;
+    string event_status = 3;
+    string event_location = 4;
+    string unit_id = 5;
+    string unit_number = 6;
+    Timer timer = 7;
+    string driver_id = 8;
+}
+
+message ListDriverLogsNdays {
+    int32 count = 1;
+    repeated DriverLogsNdays items = 2;
+} 
+
+message CorrectionDutyLog {
+    repeated Log log = 1; 
+    string edited_by_id = 2;
+    string type = 3;
+    string assigned_from_driver_id = 4;
+    string assigned_to_driver_id = 5;
+    string start_time = 6;
+    string end_time = 7;
+}
+
+message ListCertifyLog {
+    int32 count = 1;
+    repeated CertifyLog items = 2;
+}
+
+message VerifyInsertLog {
+    string driver_id = 1;
+    string status = 2;
+}
+
+message TimerList {
+    repeated Timer timer = 1;
+}
+
+message GetTimerList {
+    repeated string driver_id = 1;
+    string date = 2;
+} 
+
+message CycleList {
+    repeated string time = 1;
+}
+
+message ShiftList {
+    repeated string shift_time = 2;
+}
+
+message TransferRequest {
+    string start_time_first = 1;
+    string start_time_second = 2;
+    string second = 3;
+    string driver_id = 4;
+}
+
+message Driver {
+    string id = 1;
+    User user = 2;
+    Object vehicle = 3;
+    CompanyAddress address = 4;
+    Object co_driver = 5;
+    Object license_state = 6;
+    string licence_number = 7;
+    string signature = 8;
+    string status = 9;
+    bool is_online = 10;
+    Company driver_company = 11;
+}
+
+message Company {
+    string id = 1;
+    int64 usdot = 2;
+    string time_zone = 3;
+    string title = 4;
+    string company_address = 5;
+    string terminal_address = 6;
+    string email = 7; 
+    string phone_number = 8;
+    string accounting_email = 9;
+    string safety_email = 10;
+    string status = 11;
+    string status_change_reason = 12;
+}
+
+message User {
+    string id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string phone = 5;
+    string username = 6;
+    string status = 7;
+    string company_id = 8;
+}
+
+message NormalizeRequest {
+    string type = 1;
+    string maxspeed = 2; 
+    string log_id = 3;
+    string driver_id = 4;
+}
+
+message LogsData {
+    string vehicleId = 1;
+    string document = 2;
+    string trailer = 3;
+}
+
+message BulkEditRequest {
+    LogsData logsData = 1;
+    repeated string logIds = 2; 
+}
+
+message ReassignRequest {
+    string date = 1;
+    repeated string logIds = 2; 
+    string to_driver_id = 3;
+    string from_driver = 4;
+}
+
+
+
+
+
+
+
+
+
+
+

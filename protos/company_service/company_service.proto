@@ -1,0 +1,213 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+import "company_health.proto";
+import "company_models.proto";
+import "company.proto";
+import "unit.proto";
+import "driver.proto";
+import "aplication.proto";
+import "broker.proto";
+import "location.proto";
+import "document.proto";
+import "tags.proto";
+import "load.proto";
+import "load_service.proto";
+
+service HealthCheckService {
+    rpc HealthCheck(Empty) returns (HealthCheckResponse) {}
+}
+
+service CompanyService {
+    rpc Create(Company) returns (Company) {}
+    rpc Update(Company) returns (Company) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Company) {}
+    rpc Find(GetListFilter) returns (CompanyList) {}
+    rpc NewUpdate(UpdateMessage) returns (UpdateMessage) {}
+}
+
+service CompanyUserService {
+    rpc Create(CompanyUser) returns (CompanyUserResponse) {}
+    rpc Update(CompanyUserUpdate) returns (CompanyUserUpdate) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (CompanyUserResponse) {}
+    rpc Find(GetListFilter) returns (CompanyUserList) {}
+    rpc MultipleGet(MultipleGetRequest) returns (CompanyUserList) {}
+}
+
+service InvitationService {
+    rpc Create(Invitation) returns (Invitation) {}
+    rpc Update(InvitationUpdateStatus) returns (InvitationUpdateStatus) {}
+    rpc Get(Id) returns (Invitation) {}
+}
+
+service UnitService {
+    rpc Create(Unit) returns (Unit) {}
+    rpc UpdateStatus(UpdateStatusRequest) returns (Empty) {}
+    rpc Update(Unit) returns (Unit) {}
+    rpc Find(GetListFilter) returns (UnitList) {}
+    rpc Get(Id) returns (Unit) {}
+    rpc ReactiveUnit(ReactivatedStatus) returns (ReactivatedStatus) {}
+    rpc UploadUnit(UploadUnits) returns (UploadUnits) {}
+    rpc MultipleGet(MultipleGetRequest) returns (MultipleUnitList) {}
+    rpc UnitTracking(GetListFilter) returns (UnitList) {}
+}
+
+service DriverService {
+    rpc Create(Driver) returns (MutationResponse) {}
+    rpc Find(GetListFilter) returns (DriverListResponse) {}
+    rpc Update(Driver) returns (MutationResponse) {}
+    rpc Get(Id) returns (Driver) {}
+    rpc UpdateStatus(UpdateStatusRequest) returns (Empty) {}
+    rpc UploadDriverList(UploadDrivers) returns (UploadDrivers) {}
+    rpc GetDriverLogs(MultipleGetRequest) returns (Driver) {}
+    rpc GetDriverListWithStatuses(GetListFilter) returns (DriverListResponse) {}
+    rpc GetDriverLogsList(GetListFilter) returns (DriverListResponse) {}
+    rpc MultipleGet(MultipleGetRequest) returns (MultipleDriverList) {}
+}
+
+service DriverDeviceService {
+    rpc Upsert(DriverDevice) returns (DriverDevice) {}
+    rpc Get(Id) returns (DriverDevice) {}
+}
+
+service AplicationService {
+    rpc Create(Aplication) returns (Aplication) {}
+    rpc Update(UpdateAplicationStatus) returns (UpdateAplicationStatus) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Aplication) {}
+    rpc Find(GetListFilter) returns (AplicationList) {}
+    rpc AplicationVerify(AplicationStatus) returns (Empty) {}
+    rpc VerifyAplicationEmail(VerifyEmail) returns (Empty) {}
+}
+
+service BrokerService {
+    rpc Create(Broker) returns (Broker) {}
+    rpc Update(Broker) returns (Broker) {}
+    rpc Get(Id) returns (Broker) {}
+    rpc Find(GetListFilter) returns (BrokerList) {}
+    rpc UpdateStatus(UpdateStatusRequest) returns (Empty) {}
+    rpc ReactiveBroker(ReactivatStatus) returns (ReactivatStatus) {}
+}
+
+service LocationService {
+    rpc Create(Location) returns (Location) {}
+    rpc Update(Location) returns (Location) {}
+    rpc Get(Id) returns (Location) {}
+    rpc Find(GetListFilter) returns (LocationList) {}
+    rpc UpdateStatus(UpdateStatusRequest) returns (Empty) {}
+    rpc ReactiveLocation(ReactiveStatus) returns (ReactiveStatus) {}
+}
+
+service DocumentTypeService {
+    rpc Create(DocumentType) returns (DocumentType) {}
+    rpc Update(DocumentType) returns (DocumentType) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (DocumentType) {}
+    rpc Find(GetListFilter) returns (DocumentTypeList) {}
+}
+
+service DocumentService {
+    rpc Create(Document) returns (Document) {}
+    rpc Update(Document) returns (Document) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Document) {}
+    rpc Find(GetListFilter) returns (DocumentList) {}
+}
+
+service TagService {
+    rpc Create(Tag) returns (Tag) {}
+    rpc Update(Tag) returns (Tag) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Tag) {}
+    rpc Find(GetListFilter) returns (TagList) {}
+}
+
+service LoadService {
+    rpc Create(LoadCreateRequest) returns (LoadCreateResponse) {}
+    rpc Find(GetListFilter) returns (LoadGetListResponse) {}
+    rpc Get(Id) returns (LoadGetResponse) {}
+    rpc UpdateField(UpdateFieldRequest) returns (Empty) {}
+    rpc Update(LoadGetResponse) returns (LoadGetResponse) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Upload(UploadLoad) returns (Empty) {}
+}
+
+service LoadPaymentService {
+    rpc Update(LoadPayment) returns (LoadPayment) {}
+    rpc Get(Id) returns (LoadPayment) {}
+}
+
+service LoadAttachmentService {
+    rpc Create(LoadAttachment) returns (LoadAttachment) {}
+    rpc Update(LoadAttachment) returns (LoadAttachment) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (LoadAttachment) {}
+    rpc Find(GetListFilter) returns (LoadAttachmentList) {}
+}
+
+service NoteStatusesService {
+    rpc Create(NoteStatuses) returns (NoteStatuses) {}
+    rpc Update(NoteStatuses) returns (NoteStatuses) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (NoteStatuses) {}
+    rpc Find(GetListFilter) returns (NoteStatusesList) {}
+}
+
+service LoadNoteService {
+    rpc Create(LoadNote) returns (LoadNote) {}
+    rpc Update(LoadNote) returns (LoadNote) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (LoadNote) {}
+    rpc Find(GetListFilter) returns (LoadNoteList) {}
+}
+
+service StopService {
+    rpc Create(Stop) returns (Stop) {}
+    rpc Update(Stop) returns (Stop) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Stop) {}
+    rpc Find(GetListFilter) returns (StopList) {}
+}
+
+service ServiceCategoryService {
+    rpc Create(ServiceCategory) returns (ServiceCategory) {}
+    rpc Update(ServiceCategory) returns (ServiceCategory) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (ServiceCategory) {}
+    rpc Find(GetListFilter) returns (ServiceCategoryList) {}
+}
+
+service ServiceService {
+    rpc Create(Service) returns (Service) {}
+    rpc Update(Service) returns (Service) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Service) {}
+    rpc Find(GetListFilter) returns (ServiceList) {}
+}
+
+service UnitDispatchStatusService {
+    rpc Create(UnitDispatchStatus) returns (UnitDispatchStatus) {}
+    rpc Update(UnitDispatchStatus) returns (UnitDispatchStatus) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (UnitDispatchStatus) {}
+    rpc Find(GetListFilter) returns (UnitDispatchStatusList) {}
+    rpc UpdateOrder(UpdateOrderRequest) returns (Empty) {}
+}
+
+service LoadManagementService {
+    rpc UpdateUnitDispatchStatus(UpdateUnitDispatchStatusRequest) returns (Empty) {}
+    rpc Find(GetListFilter) returns (LoadManagmentList) {}
+    rpc Get(Id) returns (LoadManagmentSingleItem) {}
+}
+
+service CalendarNoteService {
+    rpc Create(CalendarNote) returns (CalendarNote) {}
+    rpc Update(CalendarNote) returns (CalendarNote) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (CalendarNote) {}
+    rpc Find(GetListFilter) returns (CalendarNoteList) {}
+}

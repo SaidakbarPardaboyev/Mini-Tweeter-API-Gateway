@@ -1,0 +1,188 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+import "company_models.proto";
+
+message LoadPayment {
+    string id = 1;
+    string type = 2;
+    bool override = 3;
+    float loaded_rpm = 4;
+    float empty_rpm = 5;
+    float percent = 6;
+    float fixed = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message Load {
+    string  id = 1;
+    Object dispatcher = 2;
+    Object company = 3;
+    Object unit = 4;
+    Object broker = 5;
+    string load_id = 6;
+    float price = 7;
+    int64 empty_mile = 8;
+    int64 loaded_mile = 9;
+    string status = 10;
+    string note = 12;
+    LoadPayment payment = 13;
+    string from_date = 14;
+    string to_date = 15;
+    string created_at = 16;
+    string updated_at = 17;
+}
+
+message Stop {
+    string id = 1;
+    string load_id = 2;
+    string type = 3;
+    string from_date = 4;
+    string to_date = 5;
+    int32 pickup_number = 6;
+    int32 trailer_number = 7;
+    float lat = 8;
+    float long = 9;
+    Object address = 10;
+    string city = 11;
+    string state = 12;
+    string contact = 13;
+    string note = 14;
+    string created_at = 15;
+    string updated_at = 16;
+    int64 zipcode = 17;
+}
+
+message StopList {
+    int32 count = 1;
+    repeated Stop items = 2;
+}
+
+message LoadAttachment {
+    string id = 1;
+    Object type = 2;
+    string load_id = 3;
+    string title = 4;
+    string file = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message LoadAttachmentList {
+    int32 count = 1;
+    repeated LoadAttachment items = 2;
+}
+
+
+message LoadCreateRequest {
+    Load load = 1;
+    repeated Stop stops = 2;
+    repeated LoadAttachment attachments = 3;
+}
+
+message LoadCreateResponse {
+    string id = 1;
+    string message = 2;
+}
+
+message LoadGetListItem {
+    string id = 1;
+    string load_id = 2;
+    string from_date = 3;
+    string to_date = 4;
+    string status = 5;
+    string from = 6;
+    string to = 7;
+    float price = 8;
+    int64 empty_mile = 9;
+    int64 loaded_mile = 10;
+    string created_at = 11;
+    string updated_at = 12;
+    string company_id = 13;
+    Object driver = 14;
+    Object codriver = 15;
+    Object unit = 16;
+    Object broker = 17;
+}
+
+message LoadGetListResponse {
+    int32 count = 1;
+    repeated LoadGetListItem items = 2;
+}
+
+message LoadGetResponse {
+    string  id = 1;
+    Object dispatcher = 2;
+    Object company = 3;
+    Object unit = 4;
+    Object broker = 5;
+    LoadPayment payment = 6;
+    string load_id = 7;
+    float price = 8;
+    int64 empty_mile = 9;
+    int64 loaded_mile = 10;
+    string status = 11;
+    string note = 12;
+    string from_date = 14;
+    string to_date = 15;
+    string from = 16;
+    string to = 17;
+    string created_at = 18;
+    string updated_at = 19;
+}
+
+message NoteStatuses {
+    string id = 1;
+    string title = 2;
+    string created_at = 3;
+    string updated_at = 4;
+    bool active = 5;
+}
+
+message NoteStatusesList {
+    int32 count = 1;
+    repeated NoteStatuses items = 2;
+}
+
+message LoadNote {
+    string id = 1;                 
+    Object status = 2;
+    string load_id = 3;
+    string note = 4;
+    Object address = 5;
+    float lat = 6;
+    float long = 7;
+    string created_at = 8;
+    string updated_at = 9;
+    string created_by_id = 10;
+    string created_by = 11;
+}
+
+message LoadNoteList {
+    int32 count = 1;
+    repeated LoadNote items = 2;
+}
+
+message UploadLoad {
+   repeated LoadCreateRequest load_upload_request = 1;
+}
+
+message CalendarNote {
+    string id = 1; 
+    string start = 2;
+    string end = 3;
+    string note = 4;
+    string unit_id = 5;
+    string created_at = 6;
+    string updated_at = 7;
+}
+
+message CalendarNoteList {
+    int32 count = 1;
+    repeated CalendarNote items = 2;
+}
+
+

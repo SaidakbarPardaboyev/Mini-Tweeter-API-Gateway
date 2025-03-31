@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+import "company_models.proto";
+
+// Define the entity message
+message DocumentType {
+  string id = 1;            // UUID for the entity
+  string title = 2;         // Title
+  string category_key = 3;  // Category key
+  string created_at = 4;    // Creation timestamp
+  string updated_at = 5;    // Update timestamp
+}
+
+
+message DocumentTypeList {
+    int32 count = 1;
+    repeated DocumentType items = 2;
+}
+
+message Document {
+    string id = 1;            
+    Type type = 2;       
+    string issue_date = 3;   
+    string expire_date = 4;   
+    string document = 5; 
+    DriverDoc driver_doc = 6;     
+    string created_at = 7;   
+    string updated_at = 8;
+    string file = 9;
+    Object company = 10;
+    Object user = 11;
+    string document_id = 12;
+}
+
+message DocumentList {
+    int32 count = 1;
+    repeated Document items = 2;
+}
+
+message Type {
+    string label = 1;
+    string value = 2;
+}
+
+message DriverDoc {
+    string label = 1;
+    string value = 2;
+}
+
+
+

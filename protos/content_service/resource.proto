@@ -1,0 +1,29 @@
+syntax="proto3";
+
+package content_service;
+option go_package ="genproto/content_service";
+
+message ResourceLinks {
+    string id = 1;
+    string title = 2;
+    string link = 3;
+    string resource_id = 4;
+    float size = 5;
+}
+
+message Resource {
+    string id = 1;
+    string title = 2;
+    string slug = 3;
+    string description = 4;
+    string timezone_id = 5;
+    string timezone_title = 6;
+    repeated ResourceLinks resource_link = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message ResourceList {
+    int32 count = 1;
+    repeated Resource items = 2;
+}

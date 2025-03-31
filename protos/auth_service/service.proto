@@ -1,0 +1,113 @@
+syntax="proto3";
+
+package auth_service;
+option go_package ="genproto/auth_service";
+
+import "health.proto";
+import "models.proto";
+import "user_types.proto";
+import "api.proto";
+import "menu.proto";
+import "login.proto";
+import "user.proto";
+
+
+service HealthCheckService {
+    rpc HealthCheck(Empty) returns (HealthCheckResponse) {}
+}
+
+service PlatformService {
+    rpc Create(Platform) returns (Platform) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Platform) {}
+    rpc Find(Empty) returns (PlatformList) {}
+}
+
+service UserTypeService {
+    rpc Create(UserType) returns (UserType) {}
+    rpc Update(UserType) returns (UserType) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (UserType) {}
+    rpc Find(GetListFilter) returns (UserTypeList) {}
+}
+
+service RoleService {
+    rpc Create(Role) returns (Role) {}
+    rpc Update(Role) returns (Role) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Role) {}
+    rpc Find(GetListFilter) returns (RoleList) {}
+    rpc MultipleGet(RoleRequest) returns (RoleList) {}
+}
+
+service APIService {
+    rpc Create(API) returns (API) {}
+    rpc Update(API) returns (API) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (API) {}
+    rpc Find(GetListFilter) returns (APIList) {}
+}
+
+service MenuService {
+    rpc Create(Menu) returns (Menu) {}
+    rpc Update(Menu) returns (Menu) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Menu) {}
+    rpc Find(GetListFilter) returns (MenuList) {}
+}
+
+service SessionService {
+    rpc Create(Session) returns (Session) {}
+    rpc Update(Session) returns (Session) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Session) {}
+    rpc Find(GetListFilter) returns (SessionList) {}
+}
+
+service LoginActivityService {
+    rpc Create(LoginActivity) returns (LoginActivity) {}
+    rpc Find(GetListFilter) returns (LoginActivityList) {}
+}
+
+service UserService {
+    rpc Create(User) returns (User) {}
+    rpc Update(User) returns (User) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (User) {}
+    rpc Find(GetListFilter) returns (UserList) {}
+    rpc UpdatePassword(UpdateUserPassword) returns (UpdateUserPassword) {}
+    rpc MultipleGet(UserRequest) returns (UserList) {}
+    rpc UpdateStatus(UpdateStatusRequest) returns (Empty) {}
+    rpc MultipleCreate(CreateListUser) returns (GetByIdsRequest) {}
+}
+
+service AuthService {
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc Logout(LogoutRequest) returns (Empty) {}
+    rpc TwoFactorAuth(TwoFactorAuthRequest) returns (LoginResponse) {}
+    rpc ForgetPassword(ForgetPasswordRequest) returns (ForgetPasswordResponse) {}
+    rpc ForgetPasswordVerify(ForgetPasswordVerifyRequest) returns (ForgetPasswordVerifyResponse) {}
+    rpc ResetPassword(ResetPasswordRequest) returns (Empty) {}
+}
+
+service OtpService {
+    rpc Create(Otp) returns (Otp) {}
+    rpc Get(Id) returns (Otp) {}
+    rpc DeleteExpired(Empty) returns (Empty) {}
+}
+
+service PermissionService {
+    rpc UpsertAPIPermission(UpsertAPIPermissionRequest) returns (UpsertAPIPermissionResponse) {}
+    rpc CheckAPIPermission(CheckAPIPermissionRequest) returns (CheckAPIPermissionResponse) {}
+    rpc UpsertMenuPermission(UpsertMenuPermissionRequest) returns (UpsertMenuPermissionResponse) {} 
+    rpc UserMenus(Id) returns (UserMenuList) {} 
+    rpc UpsertSpecificAPIPermission(UpsertSpecificAPIPermissionRequest) returns (CheckSpecificAPIPermissionResponse) {}
+}
+
+service SpecificPermissionService {
+    rpc Create(SpecificPermission) returns (SpecificPermission) {}
+    rpc Update(SpecificPermission) returns (SpecificPermission) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (SpecificPermission) {}
+    rpc Find(GetListFilter) returns (SpecificPermissionList) {}
+}

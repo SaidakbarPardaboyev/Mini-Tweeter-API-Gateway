@@ -1,0 +1,160 @@
+syntax="proto3";
+
+package event_service;
+option go_package ="genproto/event_service";
+
+
+message Location {
+    float lat = 1;
+    float long = 2;
+    string address = 3;
+    string state = 4;
+}
+
+message EldInfo {
+    string vin_number = 1;
+    bool eld_connection = 2;
+    int32 speed = 3;
+    float odometer = 4;
+    float engine_hours = 5;
+    int32 fuel_percent = 6;
+    int32 def_level_percent = 7;
+    string bus = 8;
+    int32 coolant_level_percent = 9;
+    int32 coolant_temprature = 10;
+    int32 oil_level_percent = 11;
+    int32 oil_temprature = 12;
+    int32 last_updated_at = 13;
+}
+
+message TrackingCreateRequestItem {
+    string id = 1;
+    Location location = 2;
+    EldInfo eld_info = 3;
+    string debug_data = 4;
+    string created_time = 5;
+}
+
+message TrackingCreateRequest {
+    string driver_id = 1;
+    string unit_id = 2;
+    string company_id = 3;
+    repeated TrackingCreateRequestItem items = 4;
+}
+
+message Tracking {
+    string id = 1;
+    string driver_id = 2;
+    string unit_id = 3;
+    string company_id = 4;
+    Location location = 5;
+    int32 speed = 6;
+    float odometer = 7;
+    float engine_hours = 8;
+    int32 fuel_percent = 9;
+    bool eld_connection = 10;
+    string vin_number = 11;
+    string created_time = 12;
+    string debug_data = 13;
+    string created_at = 14;
+}
+
+message TrackingLight {
+    string id = 1;
+    float lat = 2;
+    float long = 3;
+    string created_at = 4;
+    string created_time = 5;
+    string title = 6;
+}
+
+message Stop {
+    string id = 1;
+    string driver_id = 2;
+    string unit_id = 3;
+    string company_id = 4;
+    Location location = 5;
+    int32 speed = 6;
+    float odometer = 7;
+    float engine_hours = 8;
+    int32 fuel_percent = 9;
+    bool eld_connection = 10;
+    string vin_number = 11;
+    bool is_closed = 12;
+    string start_time = 13;
+    string end_time = 14;
+    string debug_data = 15;
+    string created_at = 16;
+}
+
+message TrackingListResponse {
+    repeated Tracking trackings = 1;
+    repeated Stop stops = 2;
+}
+
+message TrackingListLightResponse {
+    repeated TrackingLight trackings = 1;
+    repeated Stop stops = 2;
+}
+
+message TrackingListRequest {
+    string driver_id = 1;
+    string unit_id = 2;
+    string start_time = 4;
+    string end_time = 5;
+}
+
+message DailyTrackingListRequest {
+    string driver_id = 1;
+    string unit_id = 2;
+    string date = 4;
+}
+
+message LastStateResponse {
+    string id = 1;
+    string unit_id = 2;
+    string driver_id = 3;
+    string company_id = 4;
+    Location location = 5;
+    EldInfo eld_info = 6;
+    string created_at = 7;
+    string updated_at = 8;
+    string debug_data = 9;
+    string duty_status = 10;
+}
+
+message LastStateRequest {
+    string unit_id = 1;
+    string driver_id = 2;
+}
+
+message MultipleLastStateRequest {
+    repeated string unit_ids = 1;
+    repeated string driver_ids = 2;
+    string location = 3;
+    string company_id = 4;
+    string date = 5;
+}
+
+message MultipelLastStateResponse {
+    repeated LastStateResponse states = 1;
+}
+
+message ManualLastLocation {
+    float lat = 1;
+    float long = 2;
+    string address = 3;
+    string state = 4;
+    string driver_id = 5;
+    string unit_id = 6;
+    string company_id = 7;
+}
+
+message StatusCount {
+    int32 on = 1;
+    int32 off = 2;
+    int32 dr = 3;
+    int32 sb = 4;
+    int32 pc = 5;
+    int32 ym = 6;
+}

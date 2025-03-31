@@ -1,0 +1,82 @@
+syntax="proto3";
+
+package event_service;
+option go_package ="genproto/event_service";
+
+import "event_health.proto";
+import "event_models.proto";
+import "changelog.proto";
+import "tracking.proto";
+import "eld_logs.proto";
+import "violation.proto";
+import "report.proto";
+
+
+service HealthCheckService {
+    rpc HealthCheck(Empty) returns (HealthCheckResponse) {}
+}
+service ViolationService {
+    rpc Find(GetListFilter) returns (ListViolationLog) {}
+}
+
+
+service ChangeLogService {
+    rpc Create(ChangeLog) returns (ChangeLog) {}
+    rpc Find(GetListFilter) returns (ChangeLogList) {}
+    rpc DeleteMany(Ids) returns (Empty) {}
+    rpc Delete(ChangeLogDeleteRequest) returns (Empty) {}
+}
+
+service TrackingService {
+    rpc Create(TrackingCreateRequest) returns (Empty) {}
+    rpc Find(TrackingListRequest) returns (TrackingListResponse) {}
+    rpc FindLight(TrackingListRequest) returns (TrackingListLightResponse) {}
+    rpc GetLastState(LastStateRequest) returns (LastStateResponse) {}
+    rpc MultipleGetLastState(MultipleLastStateRequest) returns (MultipelLastStateResponse) {}
+    rpc ManualUpdateCurrentLocation(ManualLastLocation) returns (Empty) {}
+    rpc GetDriverStatusCount(MultipleLastStateRequest) returns (StatusCount) {}
+}
+
+service LogService {
+    rpc Create(Log) returns (CreateResponse) {}
+    rpc Find(GetListFilter) returns (LogListResponse) {}
+    rpc MultipleGet(Ids) returns (LogListResponse) {}
+    rpc GetSingle(Id) returns (LogSingleResponse) {}
+    rpc DirectEdit(DirectEditRequest) returns (Empty) {}
+    rpc GetSingleDriverTimer(Id) returns (Timer) {}
+    rpc MultipleGetDriverTime(Ids) returns (ListTimer) {}
+    rpc GetListLogsByDriver(GetListFilter) returns (ListDriverLogsNdays) {}
+    rpc InsertDutyLog(CorrectionDutyLog) returns (Empty) {}
+    rpc GetCertifyLog(CertifyLog) returns (ListCertifyLog) {}
+    rpc MultipleInsertLog(CertifyLogRequest) returns (Empty) {}
+    rpc VerifyInsertInfoLog(VerifyInsertLog) returns (Empty) {}
+    rpc Update(UpdateLog) returns (Empty) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc MultipleGetTimer(GetTimerList) returns (TimerList) {}
+    rpc Swap(TransferRequest) returns (Empty) {}
+    rpc GetLastDutyStatus(Id) returns (LogSingleResponse) {} 
+    rpc Transfer(TransferRequest) returns (Empty) {}
+    rpc Normalize(NormalizeRequest) returns (Empty) {}
+    rpc BulkEdit(BulkEditRequest) returns (Empty) {}
+    rpc Reassign(ReassignRequest) returns (Empty) {}
+}
+
+service ChangeLogHistory {
+    rpc Create(LogCHangeHistory) returns (Id) {}
+    rpc Find(GetListFilter) returns (ListLogCHangeHistory) {}
+    rpc Get(Id) returns (LogCHangeHistory) {}
+}
+
+service ReportService {
+    rpc GetByUnit(GetListFilter) returns (IFTAreportList) {}
+    rpc GetAllState(GetListFilter) returns (IFTAReportByStateList) {}
+    rpc GetActivity(GetListFilter) returns (ActivityReportList) {}
+}
+
+service DvirReportService {
+    rpc Create(DvirReport) returns (DvirReport) {}
+    rpc Get(Id) returns (DvirReport) {}
+    rpc Find(GetListFilter) returns (DvirReportList) {} 
+    rpc Update(DvirReport) returns (DvirReport) {}
+    rpc Delete(Id) returns (Empty) {}
+}

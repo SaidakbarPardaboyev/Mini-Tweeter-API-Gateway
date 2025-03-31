@@ -1,0 +1,24 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+import "company_models.proto";
+
+message Tag {
+    string id = 1;
+    Object company = 2;
+    repeated Object company_users = 3;
+    repeated Object company_units = 4;
+    string title = 5;
+    string created_at = 6;
+    string updated_at = 7;
+    string user_id = 8;
+}
+
+message TagList {
+    int32 count = 1;
+    repeated Tag items = 2;
+}
+
+

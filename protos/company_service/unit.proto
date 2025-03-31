@@ -1,0 +1,200 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+
+import "company_models.proto";
+
+message Unit {
+    string id = 1;
+    string company_id = 2;
+    string truck_number = 3;
+    string make_id = 4;
+    string make_name = 5;
+    string model = 6;
+    string fuel_type_id = 8;
+    string fuel_type_name = 9;
+    int32  manifacture_year = 10;
+    string license_number = 11;
+    string license_state_id = 12;
+    string state_name = 13;
+    string note = 14;
+    string vin = 15;
+    string vin_read_type = 16;
+    string last_activated_at = 17;
+    string last_inactivated_at = 18;
+    string created_at = 19;
+    string updated_at = 20;
+    string driver_id = 21;
+    string driver_name = 22;
+    string co_driver_id = 23;
+    string co_driver_name = 24;
+    string status = 25;
+    string unit_id = 26;
+    string unit_name = 27;
+    LastState last_state = 28;
+    string user_id = 29;
+    string co_user_id = 30;
+}
+
+message UnitList {
+    int32 count = 1;
+    repeated Unit items = 2;
+}
+
+message UpdateUnitStatus {
+    string id = 1;
+    string status = 2;
+    string last_inactivated_at = 3;
+}
+
+message ReactivatedStatus {
+    repeated string unit_id = 1;
+    string status = 2;
+}
+
+message UploadUnits {
+    repeated Unit unit = 1;
+}
+
+message MultipleUnit {
+    string id = 1;
+    string company_id = 2;
+    string truck_number = 3;
+    string make_id = 4;
+    string make_name = 5;
+    string model = 6;
+    string fuel_type_id = 7;
+    int32 manufacture_year = 8; 
+    string license_number = 9;
+    string license_state_id = 10;
+    string note = 11;
+    string vin = 12;
+    string vin_read_type = 13;
+    string eld_vin = 14;
+    string eld_id = 15;
+    string eld_title = 16;
+    string status = 17;
+}
+
+message MultipleUnitList {
+    int32 count = 1;
+    repeated MultipleUnit items = 2;
+}
+
+message UnitDispatchStatus {
+    string id = 1;
+    string title = 2;
+    string slug = 3;
+    string color = 4;
+    int32 order = 5;
+}
+
+message UnitDispatchStatusList {
+    int32 count = 1;
+    repeated UnitDispatchStatus items = 2;
+}
+
+message UpdateUnitDispatchStatusRequest {
+    string id = 1;
+    string dispatch_status_id = 2;
+    string ready_at = 3;
+    string dispatch_note = 4;
+}
+
+message LoadManagmentListLoadItem {
+    string  id = 1;
+    string  load_id = 2;
+    string  status = 3;
+    string from = 4;
+    string to = 5;
+    string dispatcher = 6;
+    string broker = 7;
+    float price = 8;
+    int32 loaded_mile = 9;
+    int32 empty_mile = 10;
+    string from_date = 11;
+    string to_date = 12;
+}
+
+message LoadManagmentListItem {
+    Object driver = 1;
+    Object codriver = 2;
+    Object unit = 3;
+    UnitDispatchStatus dispatch_status = 4;
+    repeated LoadManagmentListLoadItem loads = 5;
+    string ready_at = 6;
+    string current_location = 7;
+    string company_id = 8;
+    float rpm = 9;
+    float total_price  = 10;
+    int32 total_loaded_miles = 11;
+    int32 total_empty_miles = 12;
+}
+
+message LoadManagmentList {
+    int32 count = 1;
+    repeated LoadManagmentListItem items = 2;
+}
+
+
+message LoadManagmentDriverInfo {
+    string id = 1;
+    string user_id = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string user_name = 5;
+    string phone_number = 6;
+    string email = 7;
+}
+
+message LoadManagmentSingleItem {
+    LoadManagmentDriverInfo driver = 1;
+    LoadManagmentDriverInfo codriver = 2;
+    Object unit = 3;
+    UnitDispatchStatus dispatch_status = 4;
+    repeated LoadManagmentListLoadItem loads = 5;
+    string ready_at = 6;
+    string dispatch_note = 7;   
+    string current_location = 8;
+}
+
+message EldInfo {
+    string vin_number = 1;
+    bool eld_connection = 2;
+    int32 speed = 3;
+    float odometer = 4;
+    float engine_hours = 5;
+    int32 fuel_percent = 6;
+    int32 def_level_percent = 7;
+    string bus = 8;
+    int32 coolant_level_percent = 9;
+    int32 coolant_temprature = 10;
+    int32 oil_level_percent = 11;
+    int32 oil_temprature = 12;
+    int32 last_updated_at = 13;
+}
+
+message UnitLocation {
+    float lat = 1;
+    float long = 2;
+    string address = 3;
+    string state = 4;
+}
+
+message LastState {
+    string id = 1;
+    string unit_id = 2;
+    string driver_id = 3;
+    string company_id = 4;
+    UnitLocation location = 5;
+    EldInfo eld_info = 6;
+    string created_at = 7;
+    string updated_at = 8;
+    string debug_data = 9;
+    string duty_status = 10;
+}
+
+
+

@@ -1,0 +1,113 @@
+syntax="proto3";
+
+package auth_service;
+option go_package ="genproto/auth_service";
+
+import "user.proto";
+import "user_types.proto";
+import "menu.proto";
+
+message Session {
+    string id = 1;
+    string user_id = 2;
+    string platform_id = 3;
+    string device_name = 4;
+    string status = 5;
+    string ip = 10;
+    string location = 11;
+    string created_at = 12;
+    string updated_at = 13;
+}
+
+message SessionList {
+    int32 count = 1;
+    repeated Session items = 2;
+}
+
+
+message LoginActivity {
+    string id = 1;
+    string user_id = 2;
+    string platform_id = 3;
+    bool success = 4;
+    string ip = 5;
+    string location = 6;
+    string fail_reason = 7;
+    string created_at = 8;
+    string updated_at = 9;
+}
+
+message LoginActivityList {
+    int32 count = 1;
+    repeated LoginActivity items = 2;
+}
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+    string platform_key = 3;
+    string device_name = 4;
+    string ip = 5;
+    string location = 6;
+}
+
+message LoginResponse {
+    User user = 1;
+    Session session = 2;
+    UserType user_type = 3;
+    string status = 4; // success, 2fa, fail 
+    repeated string verify_emails = 5;
+    string access_token = 6; // these tokens are generated in api gateway level
+    string refresh_token = 7;
+    map<string, string> extra = 8;
+    repeated UserMenusPermission permission = 9;
+    string time_zone = 10;
+}
+
+message LogoutRequest {
+    string session_id = 1;
+}
+
+message TwoFactorAuthRequest {
+    string email = 1;
+    string code = 2;
+    string ip = 3;
+    string location = 4;
+    string platform_key = 5;
+    string device_name = 6;
+    string tag = 7;
+}
+
+message Otp {
+    string recepient = 1;
+    string code = 2;
+    int32 expire_seconds = 3;
+    string tag = 4;
+}
+
+message ForgetPasswordRequest {
+    string email = 1;
+}
+
+message ForgetPasswordResponse {
+    string email = 1;
+    string token = 2;
+    string tag = 3;
+    int32 expire_seconds = 4;
+}
+
+message ForgetPasswordVerifyRequest {
+    string email = 1;
+    string code = 2;
+    string tag = 3;
+}
+
+message ForgetPasswordVerifyResponse {
+    string user_id = 1;
+    string token = 2;
+}
+
+message ResetPasswordRequest {
+    string user_id = 1;
+    string password = 2;
+}

@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package auth_service;
+option go_package ="genproto/auth_service";
+ 
+
+message Platform {
+    string id = 1;
+    string slug = 2;
+}
+
+message PlatformList {
+    int32 count = 1;
+    repeated Platform items = 2;
+}
+
+message UserType {
+    string id = 1;
+    string slug = 2;
+    string register = 3;
+    string verification = 4;
+    int32 session_limit = 5;
+    bool requires_approval = 6;
+    repeated string allowed_platforms_ids = 7;
+    int32 access_token_duration = 8;
+    int32 refresh_token_duration = 9;
+    int32 verification_token_duration = 10;
+    string created_at = 11;
+    string updated_at = 12;
+}
+
+message UserTypeList {
+    int32 count = 1;
+    repeated UserType items = 2;
+}
+
+message Role {
+    string id = 1;
+    string slug = 2;
+    string user_type_id = 3;
+    string user_type = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    map<string, string> extra = 7;
+}
+
+message RoleList {
+    int32 count = 1;
+    repeated Role items = 2;
+}
+
+message RoleRequest {
+    repeated string role_ids = 1;
+}

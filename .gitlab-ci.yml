@@ -1,0 +1,103 @@
+include:
+  - .gitlab/ci/*.gitlab-ci.yml
+
+before_script:
+  - docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+
+stages:
+  - build
+  - deploy
+  - rollback
+
+
+# 
+build:
+  stage: build
+  image: gitlab.udevs.io:5050/docker/helm:dind
+  before_script:
+    - docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+  script:
+    - make build-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=latest
+    - make push-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=latest
+  only:
+    - master
+
+deploy:
+  image: gitlab.udevs.io:5050/docker/helm:dind
+  stage: deploy
+  variables:
+    NEW_IMAGE: "gitlab.udevs.io:5050/$CI_PROJECT_NAMESPACE/${CI_PROJECT_NAME}:${CI_PIPELINE_IID}"
+    OLD_PATTERN: "gitlab.udevs.io:5050/$CI_PROJECT_NAMESPACE/${CI_PROJECT_NAME}:[a-zA-Z0-9_\\.\\-]*"
+    SERVICE_FILE: "/etc/systemd/system/${CI_PROJECT_NAME}.service"
+  before_script:
+    - eval $(ssh-agent -s)
+    - echo "$GITLAB_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+  script:
+    - ssh -p $TEST_SSH_ELD_PORT -o StrictHostKeyChecking=no $TEST_SSH_ELD_USER@$TEST_SSH_ELD_HOST "sudo docker pull ${NEW_IMAGE}"
+    - ssh -p $TEST_SSH_ELD_PORT -o StrictHostKeyChecking=no $TEST_SSH_ELD_USER@$TEST_SSH_ELD_HOST "sudo sed -i 's|'${OLD_PATTERN}'|'${NEW_IMAGE}'|g' ${SERVICE_FILE} && sudo systemctl daemon-reload && sudo systemctl restart ${CI_PROJECT_NAME}.service"
+  only:
+    - master
+
+
+# 
+build-prod:
+  stage: build
+  image: gitlab.udevs.io:5050/docker/helm:dind
+  before_script:
+    - docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+  script:
+    - make build-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=production
+    - make push-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=production
+  only:
+    - main # GKE deployment
+
+deploy-prod:
+  stage: deploy
+  extends: .deploy_template
+  variables:
+    NAMESPACE: production
+    VALUES_FILE: .helm/values-prod.yml
+    K8SCONFIGJSON: $ELD_KUBECONFIG
+  only:
+    - main # GKE deployment
+
+rollback-prod:
+  stage: rollback
+  extends: .rollback_template
+  variables:
+    NAMESPACE: production
+    K8SCONFIGJSON: $ELD_KUBECONFIG
+  when: manual
+
+
+# 
+build-test:
+  stage: build
+  image: gitlab.udevs.io:5050/docker/helm:dind
+  before_script:
+    - docker login $CI_REGISTRY --username $CI_REGISTRY_USER --password $CI_REGISTRY_PASSWORD
+  script:
+    - make build-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=test
+    - make push-image TAG=$CI_PIPELINE_IID SERVICE_NAME=$CI_PROJECT_NAME PROJECT_NAME=$CI_PROJECT_NAMESPACE REGISTRY=$CI_REGISTRY ENV_TAG=test
+  only:
+    - staging # GKE deployment
+
+deploy-test:
+  stage: deploy
+  extends: .deploy_template
+  variables:
+    NAMESPACE: staging
+    VALUES_FILE: .helm/values-test.yml
+    K8SCONFIGJSON: $ELD_KUBECONFIG
+  only:
+    - staging # GKE deployment
+
+rollback-test:
+  stage: rollback
+  extends: .rollback_template
+  variables:
+    NAMESPACE: staging
+    K8SCONFIGJSON: $ELD_KUBECONFIG
+  when: manual

@@ -1,0 +1,100 @@
+# Super Admin Permissions
+p, super_admin, *, *, allow
+p, super_admin, /v1/auth/login, POST, allow
+p, super_admin, /v1/auth/logout, POST, allow
+p, super_admin, /v1/auth/refresh-token, GET, allow
+
+p, super_admin, /v1/invitationdata, POST, allow
+p, super_admin, /v1/invitationdata, PUT, allow
+p, super_admin, /v1/invitationdata/*, GET, allow
+p, super_admin, /v1/invitationdata/list/*, GET, allow
+p, super_admin, /v1/invitationdata/*, DELETE, allow
+
+p, super_admin, /v1/invitationtemplate, POST, allow
+p, super_admin, /v1/invitationtemplate, PUT, allow
+p, super_admin, /v1/invitationtemplate/*, GET, allow
+p, super_admin, /v1/invitationtemplate/list/*, GET, allow
+p, super_admin, /v1/invitationtemplate/*, DELETE, allow
+
+p, super_admin, /v1/merchant, POST, allow
+p, super_admin, /v1/merchant/*, GET, allow
+p, super_admin, /v1/merchant/list/*, GET, allow
+p, super_admin, /v1/merchant, PUT, allow
+p, super_admin, /v1/merchant/*, DELETE, allow
+
+p, super_admin, /v1/order, POST, allow
+p, super_admin, /v1/order, PUT, allow
+p, super_admin, /v1/order/*, GET, allow
+p, super_admin, /v1/order/list/*, GET, allow
+p, super_admin, /v1/order/*, DELETE, allow
+
+p, super_admin, /v1/merchant-invitation-template, POST, allow
+p, super_admin, /v1/merchant-invitation-template, PUT, allow
+p, super_admin, /v1/merchant-invitation-template/*, GET, allow
+p, super_admin, /v1/merchant-invitation-template/list/*, GET, allow
+p, super_admin, /v1/merchant-invitation-template/*, DELETE, allow
+
+p, super_admin, /v1/file/upload, POST, allow
+p, super_admin, /v1/file/delete, DELETE, allow
+
+p, super_admin, /v1/merchant-payment, POST, allow
+p, super_admin, /v1/merchant-payment, PUT, allow
+p, super_admin, /v1/merchant-payment/*, GET, allow
+p, super_admin, /v1/merchant-payment/list/*, GET, allow
+p, super_admin, /v1/merchant-payment/*, DELETE, allow
+
+p, super_admin, /v1/general-info, POST, allow
+p, super_admin, /v1/general-info, PUT, allow
+p, super_admin, /v1/general-info, GET, allow
+p, super_admin, /v1/general-info/list/*, GET, allow
+p, super_admin, /v1/general-info/*, DELETE, allow
+
+# Merchant Permissions
+p, merchant, /v1/auth/login, POST, allow
+p, merchant, /v1/auth/logout, POST, allow
+p, merchant, /v1/auth/refresh-token, GET, allow
+
+p, merchant, /v1/invitationdata, POST, allow
+p, merchant, /v1/invitationdata, PUT, allow
+p, merchant, /v1/invitationdata/*, GET, allow
+p, merchant, /v1/invitationdata/list/*, GET, allow
+p, merchant, /v1/invitationdata/*, DELETE, deny  # Merchant cannot delete invitations
+
+p, merchant, /v1/invitationtemplate, POST, deny  # Merchant cannot create templates
+p, merchant, /v1/invitationtemplate, PUT, deny  # Merchant cannot update templates
+p, merchant, /v1/invitationtemplate/*, GET, allow
+p, merchant, /v1/invitationtemplate/list/*, GET, allow
+p, merchant, /v1/invitationtemplate/*, DELETE, deny
+
+p, merchant, /v1/merchant, POST, deny
+p, merchant, /v1/merchant/*, GET, allow
+p, merchant, /v1/merchant/list/*, GET, deny
+p, merchant, /v1/merchant, PUT, allow
+p, merchant, /v1/merchant/*, DELETE, deny
+
+p, merchant, /v1/order, POST, allow
+p, merchant, /v1/order, PUT, allow
+p, merchant, /v1/order/*, GET, allow
+p, merchant, /v1/order/list/*, GET, allow
+p, merchant, /v1/order/*, DELETE, allow
+
+p, merchant, /v1/merchant-invitation-template, POST, allow
+p, merchant, /v1/merchant-invitation-template, PUT, allow
+p, merchant, /v1/merchant-invitation-template/*, GET, allow
+p, merchant, /v1/merchant-invitation-template/list/*, GET, allow
+p, merchant, /v1/merchant-invitation-template/*, DELETE, allow
+
+p, merchant, /v1/file/upload, POST, allow
+p, merchant, /v1/file/delete, DELETE, allow
+
+p, merchant, /v1/merchant-payment, POST, deny
+p, merchant, /v1/merchant-payment, PUT, deny
+p, merchant, /v1/merchant-payment/*, GET, deny
+p, merchant, /v1/merchant-payment/list/*, GET, deny
+p, merchant, /v1/merchant-payment/*, DELETE, deny
+
+p, merchant, /v1/general-info, POST, allow
+p, merchant, /v1/general-info, PUT, allow
+p, merchant, /v1/general-info, GET, allow
+p, merchant, /v1/general-info/list/*, GET, allow
+p, merchant, /v1/general-info/*, DELETE, allow

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package integration_service;
+option go_package="genproto/integration_service";
+
+import "maps.proto";
+import "integration_health.proto";
+import "integration_models.proto";
+import "stripe.proto";
+
+service HealthCheckService {
+    rpc HealthCheck(Empty) returns (HealthCheckResponse) {}
+}
+
+service MapsService {
+    rpc GetList(GetAddress) returns (AddressList) {};
+    rpc GetLocation(GetAddress) returns (Address) {};
+    rpc GetAdrres(GetFormatAddres) returns (AddressFormatList) {};
+}
+
+service PaymentService {
+    rpc CreateMethod(NewPaymentMethod) returns (PaymentMethod) {}
+    rpc GetMethod(PaymentMethodId) returns (PaymentMethod) {}
+    rpc FindMethodList(PaymentMethodId) returns (PaymentMethodList) {}
+    rpc MakeMethodMain(PaymentMethodId) returns (Empty) {}
+    rpc MakePayment(PaymentBody) returns (InvoiceList) {}
+}
+
+

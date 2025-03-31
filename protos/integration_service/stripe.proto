@@ -1,0 +1,63 @@
+syntax="proto3";
+
+package integration_service;
+option go_package ="genproto/integration_service";
+
+message NewPaymentMethod {
+  string email = 1;
+  string payment_method_id = 2;
+  string company_id = 3;
+  bool is_first = 4;
+}
+
+message PaymentMethod {
+  string id = 1;
+  uint64 expiry_month = 2;
+  uint64 expiry_year = 3;
+  string last4 = 4;
+  string brand = 5;
+  string type = 6;
+  bool is_main = 7;
+}
+
+message PaymentMethodId {
+  string id = 1;
+  string customer_id = 2;
+  string company_id = 3;
+}
+
+message PaymentMethodList {
+  int32 count = 1;
+  repeated PaymentMethod items = 2;
+}
+
+message PaymentObject {
+  double amount = 1;
+  bool is_from_balance = 2;
+}
+
+message PaymentBody {
+  repeated PaymentObject payment = 1;
+  string company_id = 2;
+}
+
+message InvoiceItem {
+  string id = 1;
+  string title = 3;
+  double amount = 4;
+}
+
+message Invoice {
+  string id = 1;
+  double applied_balance = 2;
+  string status = 3;
+  string paid_at = 4;
+  string created_at = 5;
+  string hosted_url = 6;
+  string invoice_pdf = 7;
+}
+
+message InvoiceList {
+  int32 count = 1;
+  repeated Invoice items = 2;
+}

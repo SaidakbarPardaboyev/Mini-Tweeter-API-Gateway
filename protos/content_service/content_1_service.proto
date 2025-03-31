@@ -1,0 +1,94 @@
+syntax="proto3";
+
+package content_service;
+option go_package ="genproto/content_service";
+
+import "content_health.proto";
+import "content_models.proto";
+import "timezone.proto";
+import "country.proto";
+import "state.proto";
+import "truck_make.proto";
+import "truck_model.proto";
+import "fuel_type.proto";
+import "resource.proto";
+import "resource_link.proto";
+import "quick_start.proto";
+
+
+service HealthCheckService {
+    rpc HealthCheck(Empty) returns (HealthCheckResponse) {}
+}
+
+service TimezoneService {
+    rpc Create(Timezone) returns (Timezone) {}
+    rpc Update(Timezone) returns (Timezone) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Timezone) {}
+    rpc Find(GetListFilter) returns (TimezoneList) {}
+}
+
+service CountryService {
+    rpc Create(Country) returns (Country) {}
+    rpc Update(Country) returns (Country) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Country) {}
+    rpc Find(GetListFilter) returns (CountryList) {}
+}
+
+service StateService {
+    rpc Create(State) returns (State) {}
+    rpc Update(State) returns (State) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (State) {}
+    rpc Find(GetListFilter) returns (StateList) {}
+    rpc MultipleGet(GetListRequest) returns (StateList) {}
+}
+
+service TruckMakeService {
+    rpc Create(TruckMake) returns (TruckMake) {}
+    rpc Update(TruckMake) returns (TruckMake) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (TruckMake) {}
+    rpc Find(GetListFilter) returns (TruckMakesList) {}
+}
+
+service TruckModelService {
+    rpc Create(TruckModel) returns (TruckModel) {}
+    rpc Update(TruckModel) returns (TruckModel) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (TruckModel) {}
+    rpc Find(GetListFilter) returns (TruckModelList) {}
+}
+
+service FuelTypeService {
+    rpc Create(FuelType) returns (FuelType) {}
+    rpc Update(FuelType) returns (FuelType) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (FuelType) {}
+    rpc Find(GetListFilter) returns (FuelTypeList) {}
+}
+
+service ResourceService {
+    rpc Create(Resource) returns (Resource) {}
+    rpc Update(Resource) returns (Resource) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (Resource) {}
+    rpc Find(GetListFilter) returns (ResourceList) {}
+}
+
+service ResourceLinkService {
+    rpc Create(ResourceLink) returns (ResourceLink) {}
+    rpc Update(ResourceLink) returns (ResourceLink) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (ResourceLink) {}
+    rpc Find(GetListFilter) returns (ResourceLinkList) {}
+}
+
+service QuickStartService {
+    rpc Create(QuickStart) returns (QuickStart) {}
+    rpc Update(QuickStart) returns (QuickStart) {}
+    rpc Delete(Id) returns (Empty) {}
+    rpc Get(Id) returns (QuickStart) {}
+    rpc Find(GetListFilter) returns (QuickStartList) {}
+}

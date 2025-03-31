@@ -1,0 +1,54 @@
+syntax="proto3";
+
+package company_service;
+option go_package ="genproto/company_service";
+
+import "company_models.proto";
+
+message Broker {
+    string id = 1;
+    BrokerCompany company = 2;
+    string title = 3;
+    Object address1 = 4;
+    string address2 = 5;
+    string city = 6;
+    string state = 7;
+    int32 zipcode = 8;
+    string note = 9;
+    string status = 10;
+    string last_activated_at = 11;
+    string last_inactivated_at = 12;
+    string created_at = 13;
+    string updated_at = 14;
+} 
+
+message States {
+    string label = 1;
+    string value = 2;
+}
+
+message BrokerCompany {
+    string label = 1;
+    string value = 2;
+}
+
+message BrokerList {
+    int32 count = 1;
+    repeated Broker items = 2;
+}
+
+message UpdateStatus {
+    string id = 1;
+    string status = 2;
+    string last_activated_at = 3;
+    string last_inactivated_at = 4;
+}
+
+message ReactivatStatus {
+    repeated string broker_id = 1;
+    string status = 2;
+    string last_inactivated_at = 3;
+}
+
+
+

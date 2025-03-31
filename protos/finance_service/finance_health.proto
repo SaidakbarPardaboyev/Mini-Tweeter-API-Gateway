@@ -1,0 +1,9 @@
+syntax="proto3";
+
+package finance_service;
+option go_package ="genproto/finance_service";
+ 
+message HealthCheckResponse {
+    bool healthy = 1;
+    string un_health_level = 2;
+}

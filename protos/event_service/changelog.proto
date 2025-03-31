@@ -1,0 +1,28 @@
+syntax="proto3";
+
+package event_service;
+option go_package ="genproto/event_service";
+ 
+
+message ChangeLog {
+    string company_id = 1;
+    string tag = 2;
+    string item_key = 3;
+    repeated string changes = 4;
+    string created_at = 5;
+    string created_by = 6;
+    string created_by_name = 7;
+    string id = 8;
+}
+
+message ChangeLogList {
+    repeated ChangeLog items = 1;
+    int32 count = 2;
+}
+
+message ChangeLogDeleteRequest {
+    string id = 1;
+    string company_id = 2;
+    string item_key = 3;
+    string tag = 4;
+}
