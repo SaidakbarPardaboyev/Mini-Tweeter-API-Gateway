@@ -1,19 +1,18 @@
 services:
   backend:
-    container_name: Mini_Tweeter_api_gateway
-    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:develop  # 🔹 Always use latest pulled image
-    pull_policy: always  # 🔹 Ensures the latest image is always used
+    container_name: Mini_Tweeter_api_gateway_staging
+    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:develop
     ports:
       - "9000:8000"
     environment:
       - HTTP_PORT=8000
-      - USER_SERVICE_HOST=TaklifnomaVIP_auth_service
+      - USER_SERVICE_HOST=user_service
       - USER_SERVICE_PORT=8082
-      - TWEET_SERVICE_HOST=TaklifnomaVIP_order_service
+      - TWEET_SERVICE_HOST=tweet_service
       - TWEET_SERVICE_PORT=8083
-      - LIKE_SERVICE_HOST=TaklifnomaVIP_order_service
+      - LIKE_SERVICE_HOST=like_service
       - LIKE_SERVICE_PORT=8083
-      - FANOUT_SERVICE_HOST=TaklifnomaVIP_order_service
+      - FANOUT_SERVICE_HOST=fanout_service
       - FANOUT_SERVICE_PORT=8083
       - ACCESS_TOKEN_SECRET=secret
       - REFRESH_TOKEN_SECRET=secret

@@ -3,8 +3,8 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - master   # Production deployment
-      - develop  # Staging deployment
+      - master
+      - develop
 
 jobs:
   build-and-push:
@@ -34,20 +34,25 @@ jobs:
       - name: Log in to GitHub Container Registry
         run: echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
 
+      - name: Set Tag Based on Branch
+        run: |
+          BRANCH_NAME=$(echo "${GITHUB_REF}" | awk -F'/' '{print $NF}')
+          if [[ "$BRANCH_NAME" == "master" ]]; then
+            echo "IMAGE_TAG=production" >> $GITHUB_ENV
+          elif [[ "$BRANCH_NAME" == "develop" ]]; then
+            echo "IMAGE_TAG=develop" >> $GITHUB_ENV
+          fi
+
       - name: Build and Push Docker Image
         run: |
           docker buildx create --use
-          if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
-            docker buildx build --cache-to=type=local,dest=/tmp/.buildx-cache \
+          docker buildx build --cache-to=type=local,dest=/tmp/.buildx-cache \
                                --cache-from=type=local,src=/tmp/.buildx-cache \
-                               -t ghcr.io/${{ env.REPO_NAME }}/app:latest \
+                               -t ghcr.io/${{ env.REPO_NAME }}/app:${{ env.IMAGE_TAG }} \
                                --push .
-          else
-            docker buildx build --cache-to=type=local,dest=/tmp/.buildx-cache \
-                               --cache-from=type=local,src=/tmp/.buildx-cache \
-                               -t ghcr.io/${{ env.REPO_NAME }}/app:develop \
-                               --push .
-          fi
+
+      - name: Clean up dangling images
+        run: docker image prune -f
 
   deploy:
     name: Deploy to Server
@@ -63,29 +68,22 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             export REPO_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')
+            BRANCH_NAME=$(echo "${GITHUB_REF}" | awk -F'/' '{print $NF}')
             docker login ghcr.io -u "${{ github.actor }}" --password "${{ secrets.GHCR_PAT }}"
             
-            # Ensure we are inside the correct directory
             cd ~/Mini-Tweeter-API-Gateway
 
-            if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
-              # Production Deployment
+            if [[ "$BRANCH_NAME" == "master" ]]; then
+              echo "Deploying production..."
               git pull origin master
+              docker pull ghcr.io/${REPO_NAME}/app:production
               docker-compose -f docker-compose.production.yml up -d --force-recreate --no-deps
-            else
-              # Staging Deployment
+            elif [[ "$BRANCH_NAME" == "develop" ]]; then
+              echo "Deploying staging..."
               git pull origin develop
+              docker pull ghcr.io/${REPO_NAME}/app:develop
               docker-compose -f docker-compose.staging.yml up -d --force-recreate --no-deps
             fi
 
-            # Pull the latest image
-            docker pull ghcr.io/${REPO_NAME}/app:latest  # Or :develop based on branch
-
-            # Stop and remove old containers
             docker-compose down --remove-orphans
-
-            # Restart with the latest image
-            docker-compose up -d --force-recreate --no-deps
-
-            # Clean up unused Docker resources
             docker system prune -f
