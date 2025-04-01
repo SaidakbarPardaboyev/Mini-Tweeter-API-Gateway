@@ -61,20 +61,22 @@ jobs:
             # 🔹 Ensure we are inside the correct directory
             cd ~/Mini-Tweeter-API-Gateway
 
-            echo "Pulling repository..."
-            git pull origin master
-            echo "Pulled repository..."
-            
+            # 🔹 Pull the correct branch based on the event
+            if [[ "${GITHUB_REF}" == "refs/heads/master" ]]; then
+              echo "Deploying production..."
+              git pull origin master
+              docker-compose -f docker-compose.production.yml up -d --force-recreate --no-deps
+            else
+              echo "Deploying staging..."
+              git pull origin develop
+              docker-compose -f docker-compose.staging.yml up -d --force-recreate --no-deps
+            fi
+
             # 🔹 Pull the latest image
             docker pull ghcr.io/${REPO_NAME}/app:latest
 
             # 🔹 Stop and remove the old container
-            docker compose down --remove-orphans
-            
-            # 🔹 Restart containers with the latest image
-            docker compose up -d --force-recreate --no-deps
+            docker-compose down --remove-orphans
             
             # 🔹 Remove unused Docker resources
             docker system prune -f
-
-
