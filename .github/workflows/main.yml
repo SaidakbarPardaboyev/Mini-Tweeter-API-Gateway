@@ -76,13 +76,13 @@ jobs:
             
             if [[ "$BRANCH_NAME" == "master" ]]; then
               echo "Deploying production..."
-              cd ~/Mini-Tweeter/production
+              cd ~/Mini-Tweeter/api-gateway/production
               git pull origin master
               docker pull ghcr.io/${REPO_NAME}/app:production
               docker-compose -f docker-compose.yml up -d --force-recreate --no-deps
             elif [[ "$BRANCH_NAME" == "develop" ]]; then
               echo "Deploying staging..."
-              cd ~/Mini-Tweeter/staging
+              cd ~/Mini-Tweeter/api-gateway/staging
               git pull origin develop
               docker pull ghcr.io/${REPO_NAME}/app:develop
               docker-compose -f docker-compose.yml up -d --force-recreate --no-deps
