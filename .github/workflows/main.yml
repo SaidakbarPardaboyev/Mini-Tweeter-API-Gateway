@@ -54,8 +54,8 @@ jobs:
                                -t ghcr.io/${{ env.REPO_NAME }}/app:${{ env.IMAGE_TAG }} \
                                --push .
 
-      - name: Clean up dangling images
-        run: docker image prune -f
+      - name: Remove unwanted images
+        run: docker image prune -a -f
 
   deploy:
     name: Deploy to Server
