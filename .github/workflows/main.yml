@@ -79,13 +79,13 @@ jobs:
               cd ~/Mini-Tweeter/api-gateway/production
               git pull origin master
               docker pull ghcr.io/${REPO_NAME}/app:production
-              docker-compose -f docker-compose.yml up -d --force-recreate --no-deps
+              docker-compose -f docker-compose.production.yml up -d --force-recreate --no-deps
             elif [[ "$BRANCH_NAME" == "develop" ]]; then
               echo "Deploying staging..."
               cd ~/Mini-Tweeter/api-gateway/staging
               git pull origin develop
               docker pull ghcr.io/${REPO_NAME}/app:develop
-              docker-compose -f docker-compose.yml up -d --force-recreate --no-deps
+              docker-compose -f docker-compose.staging.yml up -d --force-recreate --no-deps
             else
               echo "Not a deployment branch. Skipping deployment."
               exit 0
