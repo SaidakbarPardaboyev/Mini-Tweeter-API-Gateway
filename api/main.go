@@ -77,14 +77,14 @@ func New(opt *RouterOptions) *gin.Engine {
 		fileUpload.DELETE("/delete", handlerV1.DeleteFile)
 	}
 
-	users := v1Group.Group("/users")
-	{
-		users.POST("", handlerV1.CreateUser)
-		users.PUT("", handlerV1.UpdateUser)
-		users.GET("/:id", handlerV1.GetUserByID)
-		users.GET("/list", handlerV1.GetLislUsers)
-		users.DELETE("/:id", handlerV1.DeleteUser)
-	}
+	// users := v1Group.Group("/users")
+	// {
+	// 	users.POST("", handlerV1.CreateUser)
+	// 	users.PUT("", handlerV1.UpdateUser)
+	// 	users.GET("/:id", handlerV1.GetUserByID)
+	// 	users.GET("/list", handlerV1.GetLislUsers)
+	// 	users.DELETE("/:id", handlerV1.DeleteUser)
+	// }
 
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
