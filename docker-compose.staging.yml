@@ -4,7 +4,7 @@ services:
     image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:develop  # 🔹 Always use latest pulled image
     pull_policy: always  # 🔹 Ensures the latest image is always used
     ports:
-      - "8000:8000"
+      - "9000:8000"
     environment:
       - HTTP_PORT=8000
       - USER_SERVICE_HOST=TaklifnomaVIP_auth_service
