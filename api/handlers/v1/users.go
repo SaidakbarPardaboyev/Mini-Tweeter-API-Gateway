@@ -1,155 +1,157 @@
 package v1
 
-// import (
-// 	"encoding/json"
-// 	"fmt"
-// 	"strconv"
+import (
+	"encoding/json"
+	"fmt"
 
-// 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/api/helpers"
-// 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/api/models"
-// 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/config"
-// 	usersService "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/genproto/users_service"
-// 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/etc"
-// 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/logger"
-// 	static "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/statics"
-// 	"github.com/gin-gonic/gin"
-// 	"github.com/google/uuid"
-// 	"github.com/redis/go-redis/v9"
-// )
+	// "strconv"
 
-// // @Router /v1/users [post]
-// // @Summary User Create
-// // @Description API for creating user
-// // @Tags users
-// // @Security BearerAuth
-// // @Accept  json
-// // @Produce  json
-// // @Param request body models.CreateUser true "request"
-// // @Success 200 {object} models.Response
-// // @Failure 401 {object} models.Response "Unauthorized"
-// // @Failure 403 {object} models.Response "Forbidden"
-// // @Failure 500 {object} models.Response "Internal Server Error"
-// // @Failure default {object} models.Response
-// func (h *handlerV1) CreateUser(c *gin.Context) {
-// 	var (
-// 		req models.CreateUser
-// 	)
+	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/api/helpers"
+	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/api/models"
+	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/config"
+	usersService "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/genproto/users_service"
+	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/etc"
 
-// 	err := c.ShouldBindJSON(&req)
-// 	if helpers.HandleBadRequestErrWithMessage(c, h.log, err, "Invalid request body") {
-// 		return
-// 	}
-// 	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
-// 	defer cancel()
+	// "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/logger"
+	static "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/statics"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"github.com/redis/go-redis/v9"
+)
 
-// 	// hashing password
-// 	hashedPassword, err := etc.GeneratePasswordHash(req.Password)
-// 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while hashing password") {
-// 		return
-// 	}
+// @Router /v1/users [post]
+// @Summary User Create
+// @Description API for creating user
+// @Tags users
+// @Security BearerAuth
+// @Accept  json
+// @Produce  json
+// @Param request body models.CreateUser true "request"
+// @Success 200 {object} models.Response
+// @Failure 401 {object} models.Response "Unauthorized"
+// @Failure 403 {object} models.Response "Forbidden"
+// @Failure 500 {object} models.Response "Internal Server Error"
+// @Failure default {object} models.Response
+func (h *handlerV1) CreateUser(c *gin.Context) {
+	var (
+		req models.CreateUser
+	)
 
-// 	respCreateUser, err := h.services.UserService().UserService(ctx).CreateUser(ctx, &usersService.CreateUserRequest{
-// 		User: &usersService.User{
-// 			Id:           "",
-// 			Name:         req.Name,
-// 			Surname:      req.Surname,
-// 			Bio:          req.Bio,
-// 			ProfileImage: req.ProfileImage,
-// 			Username:     req.Username,
-// 			PasswordHash: string(hashedPassword),
-// 		},
-// 	})
-// 	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error creating merchant") {
-// 		return
-// 	}
+	err := c.ShouldBindJSON(&req)
+	if helpers.HandleBadRequestErrWithMessage(c, h.log, err, "Invalid request body") {
+		return
+	}
+	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
+	defer cancel()
 
-// 	// add user to redis
-// 	userData := models.User{
-// 		Id:           respCreateUser.Id,
-// 		Name:         req.Name,
-// 		Surname:      req.Surname,
-// 		Bio:          req.Bio,
-// 		ProfileImage: req.ProfileImage,
-// 		Username:     req.Username,
-// 		PasswordHash: string(hashedPassword),
-// 	}
-// 	err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, respCreateUser.Id), etc.MarshalJSON(userData), static.CachingExpireTime).Err()
-// 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
-// 		return
-// 	}
+	// hashing password
+	hashedPassword, err := etc.GeneratePasswordHash(req.Password)
+	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while hashing password") {
+		return
+	}
 
-// 	c.JSON(200, models.Response{
-// 		Code:    config.StatusSuccess,
-// 		Message: "User created sussecsfully",
-// 		Data:    respCreateUser,
-// 	})
-// }
+	respCreateUser, err := h.services.UserService().UserService(ctx).CreateUser(ctx, &usersService.CreateUserRequest{
+		User: &usersService.User{
+			Id:           "",
+			Name:         req.Name,
+			Surname:      req.Surname,
+			Bio:          req.Bio,
+			ProfileImage: req.ProfileImage,
+			Username:     req.Username,
+			PasswordHash: string(hashedPassword),
+		},
+	})
+	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error creating merchant") {
+		return
+	}
 
-// // @Router /v1/users/{id} [get]
-// // @Summary Get User By ID
-// // @Description API for getting user by id
-// // @Tags users
-// // @Security BearerAuth
-// // @Accept  json
-// // @Produce  json
-// // @Param id path string true "id"
-// // @Success 200 {object} models.Response
-// // @Failure 401 {object} models.Response "Unauthorized"
-// // @Failure 403 {object} models.Response "Forbidden"
-// // @Failure 500 {object} models.Response "Internal Server Error"
-// // @Failure default {object} models.Response
-// func (h *handlerV1) GetUserByID(c *gin.Context) {
-// 	id := c.Param("id")
+	// add user to redis
+	userData := models.User{
+		Id:           respCreateUser.Id,
+		Name:         req.Name,
+		Surname:      req.Surname,
+		Bio:          req.Bio,
+		ProfileImage: req.ProfileImage,
+		Username:     req.Username,
+		PasswordHash: string(hashedPassword),
+	}
+	err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, respCreateUser.Id), etc.MarshalJSON(userData), static.CachingExpireTime).Err()
+	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
+		return
+	}
 
-// 	_, err := uuid.Parse(id)
-// 	if err != nil {
-// 		if helpers.HandleBadRequestErrWithMessage(c, h.log, err, "invalid id") {
-// 			return
-// 		}
-// 	}
+	c.JSON(200, models.Response{
+		Code:    config.StatusSuccess,
+		Message: "User created sussecsfully",
+		Data:    respCreateUser,
+	})
+}
 
-// 	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
-// 	defer cancel()
+// @Router /v1/users/{id} [get]
+// @Summary Get User By ID
+// @Description API for getting user by id
+// @Tags users
+// @Security BearerAuth
+// @Accept  json
+// @Produce  json
+// @Param id path string true "id"
+// @Success 200 {object} models.Response
+// @Failure 401 {object} models.Response "Unauthorized"
+// @Failure 403 {object} models.Response "Forbidden"
+// @Failure 500 {object} models.Response "Internal Server Error"
+// @Failure default {object} models.Response
+func (h *handlerV1) GetUserByID(c *gin.Context) {
+	id := c.Param("id")
 
-// 	// get from redis
-// 	userData, err := h.Redis.Get(ctx, fmt.Sprintf(static.UserCacheFormat, id)).Result()
-// 	if err == redis.Nil {
-// 		resp, err := h.services.UserService().UserService(ctx).GetUser(ctx, &usersService.GetUserRequest{
-// 			Id: id,
-// 		})
-// 		if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error getting user by id") {
-// 			return
-// 		}
+	_, err := uuid.Parse(id)
+	if err != nil {
+		if helpers.HandleBadRequestErrWithMessage(c, h.log, err, "invalid id") {
+			return
+		}
+	}
 
-// 		err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, id), etc.MarshalJSON(resp), static.CachingExpireTime).Err()
-// 		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
-// 			return
-// 		}
+	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
+	defer cancel()
 
-// 		c.JSON(200, models.Response{
-// 			Code:    config.StatusSuccess,
-// 			Message: "User got sussecsfully",
-// 			Data:    resp,
-// 		})
-// 		return
-// 	} else if err != nil {
-// 		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while getting user from redis") {
-// 			return
-// 		}
-// 	}
+	// get from redis
+	userData, err := h.Redis.Get(ctx, fmt.Sprintf(static.UserCacheFormat, id)).Result()
+	if err == redis.Nil {
+		resp, err := h.services.UserService().UserService(ctx).GetUser(ctx, &usersService.GetUserRequest{
+			Id: id,
+		})
+		if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error getting user by id") {
+			return
+		}
 
-// 	var resp models.User
-// 	err = json.Unmarshal([]byte(userData), &resp)
-// 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while unmarshaling user data") {
-// 		return
-// 	}
+		err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, id), etc.MarshalJSON(resp), static.CachingExpireTime).Err()
+		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
+			return
+		}
 
-// 	c.JSON(200, models.Response{
-// 		Code:    config.StatusSuccess,
-// 		Message: "User got sussecsfully",
-// 		Data:    resp,
-// 	})
-// }
+		c.JSON(200, models.Response{
+			Code:    config.StatusSuccess,
+			Message: "User got sussecsfully",
+			Data:    resp,
+		})
+		return
+	} else if err != nil {
+		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while getting user from redis") {
+			return
+		}
+	}
+
+	var resp models.User
+	err = json.Unmarshal([]byte(userData), &resp)
+	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while unmarshaling user data") {
+		return
+	}
+
+	c.JSON(200, models.Response{
+		Code:    config.StatusSuccess,
+		Message: "User got sussecsfully",
+		Data:    resp,
+	})
+}
 
 // // @Router /v1/users/list [get]
 // // @Summary Get Users List With Pagination
