@@ -1,7 +1,7 @@
 services:
   backend:
     container_name: Mini_Tweeter_api_gateway
-    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:latest  # 🔹 Always use latest pulled image
+    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:production  # 🔹 Always use latest pulled image
     pull_policy: always  # 🔹 Ensures the latest image is always used
     ports:
       - "8000:8000"
