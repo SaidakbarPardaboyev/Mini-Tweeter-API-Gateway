@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - develop
 
 jobs:
   build-and-push:
@@ -58,7 +59,7 @@ jobs:
             docker login ghcr.io -u "${{ github.actor }}" --password "${{ secrets.GHCR_PAT }}"
             
             # 🔹 Ensure we are inside the correct directory
-            cd ~/TaklifnomaVIP_API_Gateway
+            cd ~/Mini-Tweeter-API-Gateway
 
             echo "Pulling repository..."
             git pull origin master
