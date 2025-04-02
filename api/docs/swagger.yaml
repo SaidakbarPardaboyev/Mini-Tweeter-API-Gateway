@@ -140,35 +140,6 @@ paths:
       summary: User Sign Up
       tags:
       - auth
-  /v1/file/delete:
-    delete:
-      description: API for deleting a file from MinIO
-      parameters:
-      - description: Filename to delete
-        in: query
-        name: filename
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/models.Response'
-        "400":
-          description: Invalid request
-          schema:
-            $ref: '#/definitions/models.Response'
-        "500":
-          description: Failed to delete file
-          schema:
-            $ref: '#/definitions/models.Response'
-      security:
-      - BearerAuth: []
-      summary: Delete File from MinIO
-      tags:
-      - upload
   /v1/file/upload:
     post:
       consumes:

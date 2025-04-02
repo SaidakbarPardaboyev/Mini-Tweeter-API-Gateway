@@ -64,6 +64,14 @@ jobs:
               docker rm $CONTAINER_NAME
             fi
 
+            # Check if the Docker network exists, create it if it doesn't
+            if ! docker network inspect Mini-Tweeter-network > /dev/null 2>&1; then
+              echo "Docker network Mini-Tweeter-network not found. Creating..."
+              docker network create Mini-Tweeter-network
+            else
+              echo "Docker network Mini-Tweeter-network already exists."
+            fi
+
             # Stop and rebuild the container
             docker compose -f $COMPOSE_FILE down
             docker compose -f $COMPOSE_FILE build --no-cache
