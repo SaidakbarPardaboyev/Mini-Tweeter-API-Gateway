@@ -1,7 +1,9 @@
 services:
   backend:
     container_name: Mini_Tweeter_api_gateway_production
-    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:production  # 🔹 Always use latest pulled image
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
