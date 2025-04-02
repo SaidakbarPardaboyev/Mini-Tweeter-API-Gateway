@@ -20,6 +20,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             export REPO_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')
+
+            # Print full GITHUB_REF to debug
+            echo "GITHUB_REF: $GITHUB_REF"
             
             # Correct branch name extraction from GITHUB_REF
             BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
