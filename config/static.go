@@ -54,7 +54,8 @@ const (
 var (
 	OpenApis = map[string]bool{
 		"/v1/auth/login":                  true,
-		"/v1/auth/2fa":                    true,
+		"/v1/auth/logout":                 true,
+		"/v1/auth/sign-up":                true,
 		"/v1/auth/forget-password":        true,
 		"/v1/auth/forget-password-verify": true,
 		"/v1/auth/reset-password":         true,
