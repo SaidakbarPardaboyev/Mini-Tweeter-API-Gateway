@@ -29,13 +29,17 @@ jobs:
             if [[ "$BRANCH_NAME" == "master" ]]; then
               DEPLOY_DIR=~/Mini-Tweeter/api-gateway/production
               COMPOSE_FILE="docker-compose.production.yml"
+              CONTAINER_NAME="Mini_Tweeter_api_gateway_production"
             elif [[ "$BRANCH_NAME" == "develop" ]]; then
               DEPLOY_DIR=~/Mini-Tweeter/api-gateway/staging
               COMPOSE_FILE="docker-compose.staging.yml"
+              CONTAINER_NAME="Mini_Tweeter_api_gateway_staging"
             else
               echo "Not a deployment branch. Skipping deployment."
               exit 0
             fi
+
+            echo "Deploying to $DEPLOY_DIR using $COMPOSE_FILE for branch $BRANCH_NAME"
 
             # Ensure the directory exists
             if [ ! -d "$DEPLOY_DIR" ]; then
@@ -51,6 +55,13 @@ jobs:
             if [ ! -f "Dockerfile" ]; then
               echo "Error: Dockerfile not found!"
               exit 1
+            fi
+
+            # Remove the container based on the branch
+            if docker ps -a --filter "name=$CONTAINER_NAME" --format '{{.Names}}' | grep -w $CONTAINER_NAME > /dev/null; then
+              echo "Stopping and removing existing container $CONTAINER_NAME..."
+              docker stop $CONTAINER_NAME
+              docker rm $CONTAINER_NAME
             fi
 
             # Stop and rebuild the container
