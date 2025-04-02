@@ -80,10 +80,10 @@ func New(opt *RouterOptions) *gin.Engine {
 	users := v1Group.Group("/users")
 	{
 		users.POST("", handlerV1.CreateUser)
-		// users.PUT("", handlerV1.UpdateUser)
+		users.PUT("", handlerV1.UpdateUser)
 		users.GET("/:id", handlerV1.GetUserByID)
-		// users.GET("/list", handlerV1.GetLislUsers)
-		// users.DELETE("/:id", handlerV1.DeleteUser)
+		users.GET("/list", handlerV1.GetLislUsers)
+		users.DELETE("/:id", handlerV1.DeleteUser)
 	}
 
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition

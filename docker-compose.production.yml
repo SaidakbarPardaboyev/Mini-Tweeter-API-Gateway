@@ -1,5 +1,5 @@
 services:
-  backend:
+  api_gateway_production:
     container_name: Mini_Tweeter_api_gateway_production
     build: 
       context: .
@@ -7,15 +7,23 @@ services:
     ports:
       - "8000:8000"
     environment:
+      - ENVIRONMENT=staging
+      - LOG_LEVEL=debug
       - HTTP_PORT=8000
-      - USER_SERVICE_HOST=user_service
+      - USER_SERVICE_HOST=localhost
       - USER_SERVICE_PORT=8082
-      - TWEET_SERVICE_HOST=tweet_service
+      - TWEET_SERVICE_HOST=localhost
       - TWEET_SERVICE_PORT=8083
-      - LIKE_SERVICE_HOST=like_service
-      - LIKE_SERVICE_PORT=8083
-      - FANOUT_SERVICE_HOST=fanout_service
-      - FANOUT_SERVICE_PORT=8083
+      - LIKE_SERVICE_HOST=localhost
+      - LIKE_SERVICE_PORT=8084
+      - FANOUT_SERVICE_HOST=localhost
+      - FANOUT_SERVICE_PORT=8085
+      - REDIS_HOST=localhost
+      - REDIS_PORT=6379
+      - RABBITMQ_HOST=localhost
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
       - ACCESS_TOKEN_SECRET=secret
       - REFRESH_TOKEN_SECRET=secret
     healthcheck:
