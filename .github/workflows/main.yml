@@ -20,7 +20,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             export REPO_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')
-            BRANCH_NAME=$(echo "${GITHUB_REF}" | awk -F'/' '{print $NF}')
+            BRANCH_NAME=$(echo "${GITHUB_REF}" | awk -F'/' '{print $3}')  # Fix to correctly get branch name
 
             # Set the correct directory and docker-compose file based on branch
             if [[ "$BRANCH_NAME" == "master" ]]; then
