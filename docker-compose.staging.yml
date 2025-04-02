@@ -1,7 +1,9 @@
 services:
   backend:
     container_name: Mini_Tweeter_api_gateway_staging
-    image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:develop
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "9000:8000"
     environment:
