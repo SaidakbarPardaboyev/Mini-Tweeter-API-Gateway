@@ -19,14 +19,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            export REPO_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')
-
             # Print full GITHUB_REF to debug
             echo "GITHUB_REF: $GITHUB_REF"
-            
+
             # Correct branch name extraction from GITHUB_REF
-            BRANCH_NAME=$(echo "${GITHUB_REF#refs/heads/}")
-            echo "Branch Name: $BRANCH_NAME"
+            BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+            echo "Branch Name: $BRANCH_NAME"  # Print the branch name for debugging
 
             # Set the correct directory and docker-compose file based on branch
             if [[ "$BRANCH_NAME" == "master" ]]; then
