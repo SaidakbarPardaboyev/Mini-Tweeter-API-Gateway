@@ -4,7 +4,7 @@ services:
     # image: ghcr.io/saidakbarpardaboyev/mini-tweeter-api-gateway/app:production  # 🔹 Always use latest pulled image
     build: 
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     environment:
