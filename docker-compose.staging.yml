@@ -18,7 +18,7 @@ services:
       - LIKE_SERVICE_PORT=8084
       - FANOUT_SERVICE_HOST=localhost
       - FANOUT_SERVICE_PORT=8085
-      - REDIS_HOST=localhost
+      - REDIS_HOST=redis_staging
       - REDIS_PORT=6379
       - RABBITMQ_HOST=localhost
       - RABBITMQ_PORT=5672
