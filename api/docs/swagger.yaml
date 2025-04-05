@@ -34,23 +34,19 @@ definitions:
       message:
         type: string
     type: object
-  models.User:
+  models.UpdateUser:
     properties:
       bio:
-        type: string
-      created_at:
         type: string
       id:
         type: string
       name:
         type: string
-      password_hash:
+      password:
         type: string
       profile_image:
         type: string
       surname:
-        type: string
-      updated_at:
         type: string
       username:
         type: string
@@ -250,7 +246,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/models.User'
+          $ref: '#/definitions/models.UpdateUser'
       produces:
       - application/json
       responses:

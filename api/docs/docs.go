@@ -255,7 +255,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UpdateUser"
                         }
                     }
                 ],
@@ -616,13 +616,10 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "models.UpdateUser": {
             "type": "object",
             "properties": {
                 "bio": {
-                    "type": "string"
-                },
-                "created_at": {
                     "type": "string"
                 },
                 "id": {
@@ -631,16 +628,13 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "password_hash": {
+                "password": {
                     "type": "string"
                 },
                 "profile_image": {
                     "type": "string"
                 },
                 "surname": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 },
                 "username": {
