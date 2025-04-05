@@ -73,7 +73,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		Bio:          req.Bio,
 		ProfileImage: req.ProfileImage,
 		Username:     req.Username,
-		PasswordHash: string(hashedPassword),
+		Password:     string(hashedPassword),
 	}
 	err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, respCreateUser.Id), etc.MarshalJSON(userData), static.CachingExpireTime).Err()
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
@@ -221,7 +221,7 @@ func (h *handlerV1) GetLislUsers(c *gin.Context) {
 // @Security BearerAuth
 // @Accept  json
 // @Produce  json
-// @Param request body models.User true "request"
+// @Param request body models.UpdateUser true "request"
 // @Success 200 {object} models.Response
 // @Failure 401 {object} models.Response "Unauthorized"
 // @Failure 403 {object} models.Response "Forbidden"
@@ -229,7 +229,7 @@ func (h *handlerV1) GetLislUsers(c *gin.Context) {
 // @Failure default {object} models.Response
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
-		req models.User
+		req models.UpdateUser
 	)
 
 	err := c.ShouldBindJSON(&req)
@@ -239,6 +239,12 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
 	defer cancel()
 
+	// hashing password
+	hashedPassword, err := etc.GeneratePasswordHash(req.Password)
+	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while hashing password") {
+		return
+	}
+
 	resp, err := h.services.UserService().UserService(ctx).UpdateUser(ctx, &usersService.UpdateUserRequest{
 		User: &usersService.User{
 			Id:           req.Id,
@@ -247,7 +253,7 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 			Bio:          req.Bio,
 			ProfileImage: req.ProfileImage,
 			Username:     req.Username,
-			PasswordHash: req.PasswordHash,
+			PasswordHash: string(hashedPassword),
 		},
 	})
 	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error updating user") {
