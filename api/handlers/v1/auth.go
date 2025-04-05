@@ -68,7 +68,7 @@ func (h *handlerV1) SignUp(c *gin.Context) {
 		Bio:          req.Bio,
 		ProfileImage: req.ProfileImage,
 		Username:     req.Username,
-		PasswordHash: string(hashedPassword),
+		Password:     string(hashedPassword),
 		CreatedAt:    currentTimestamp.Format(time.RFC3339),
 	}
 
@@ -164,7 +164,7 @@ func (h *handlerV1) Login(c *gin.Context) {
 		Bio:          userResp.Bio,
 		ProfileImage: userResp.ProfileImage,
 		Username:     userResp.Username,
-		PasswordHash: userResp.PasswordHash,
+		Password:     userResp.PasswordHash,
 		CreatedAt:    userResp.CreatedAt,
 		UpdatedAt:    userResp.UpdatedAt,
 	}

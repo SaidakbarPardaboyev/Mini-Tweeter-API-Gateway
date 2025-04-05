@@ -3,6 +3,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
+
 	"strconv"
 
 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/api/helpers"
@@ -10,6 +11,7 @@ import (
 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/config"
 	usersService "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/genproto/users_service"
 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/etc"
+
 	"github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/logger"
 	static "github.com/SaidakbarPardaboyev/Mini-Tweeter-API-Gateway/pkg/statics"
 	"github.com/gin-gonic/gin"
@@ -71,12 +73,13 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 		Bio:          req.Bio,
 		ProfileImage: req.ProfileImage,
 		Username:     req.Username,
-		PasswordHash: string(hashedPassword),
+		Password:     string(hashedPassword),
 	}
 	err = h.Redis.Set(ctx, fmt.Sprintf(static.UserCacheFormat, respCreateUser.Id), etc.MarshalJSON(userData), static.CachingExpireTime).Err()
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
 		return
 	}
+	fmt.Println("user added to redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,
@@ -125,6 +128,7 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
 			return
 		}
+		fmt.Println("user data added to redis successfully")
 
 		c.JSON(200, models.Response{
 			Code:    config.StatusSuccess,
@@ -143,6 +147,7 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while unmarshaling user data") {
 		return
 	}
+	fmt.Println("got user data from redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,
@@ -158,8 +163,8 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 // @Security BearerAuth
 // @Accept  json
 // @Produce  json
-// @Param page query int true "Page number {default: 1}"
-// @Param limit query int true "Limit number {default: 10}"
+// @Param page query int false "Page number {default: 1}"
+// @Param limit query int false "Limit number {default: 10}"
 // @Param search query string false "Search keyword (role, login, fullname, phone, etc.)"
 // @Param sort_by query string false "Sort field"
 // @Param order query string false "Sorting order (asc or desc)"
@@ -219,7 +224,7 @@ func (h *handlerV1) GetLislUsers(c *gin.Context) {
 // @Security BearerAuth
 // @Accept  json
 // @Produce  json
-// @Param request body models.User true "request"
+// @Param request body models.UpdateUser true "request"
 // @Success 200 {object} models.Response
 // @Failure 401 {object} models.Response "Unauthorized"
 // @Failure 403 {object} models.Response "Forbidden"
@@ -227,7 +232,7 @@ func (h *handlerV1) GetLislUsers(c *gin.Context) {
 // @Failure default {object} models.Response
 func (h *handlerV1) UpdateUser(c *gin.Context) {
 	var (
-		req models.User
+		req models.UpdateUser
 	)
 
 	err := c.ShouldBindJSON(&req)
@@ -237,6 +242,12 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 	ctx, cancel := etc.NewTimoutContext(c.Request.Context())
 	defer cancel()
 
+	// hashing password
+	hashedPassword, err := etc.GeneratePasswordHash(req.Password)
+	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while hashing password") {
+		return
+	}
+
 	resp, err := h.services.UserService().UserService(ctx).UpdateUser(ctx, &usersService.UpdateUserRequest{
 		User: &usersService.User{
 			Id:           req.Id,
@@ -245,7 +256,7 @@ func (h *handlerV1) UpdateUser(c *gin.Context) {
 			Bio:          req.Bio,
 			ProfileImage: req.ProfileImage,
 			Username:     req.Username,
-			PasswordHash: req.PasswordHash,
+			PasswordHash: string(hashedPassword),
 		},
 	})
 	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Error updating user") {
@@ -296,6 +307,7 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while deleting user from redis") {
 		return
 	}
+	fmt.Println("deleted from redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,

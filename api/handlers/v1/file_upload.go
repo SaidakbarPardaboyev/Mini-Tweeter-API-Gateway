@@ -148,60 +148,60 @@ func compressImage(data []byte) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-// // @Router /v1/file/delete [delete]
-// // @Summary Delete File from MinIO
-// // @Description API for deleting a file from MinIO
-// // @Tags upload
-// // @Produce  json
-// // @Security BearerAuth
-// // @Param filename query string true "Filename to delete"
-// // @Success 200 {object} models.Response
-// // @Failure 400 {object} models.Response "Invalid request"
-// // @Failure 500 {object} models.Response "Failed to delete file"
-// func (h *handlerV1) DeleteFile(c *gin.Context) {
-// 	filename := strings.Replace(c.Query("filename"), "minio.taklifnomavip.uz/my-bucket/", "", 1)
-// 	if filename == "" {
-// 		c.JSON(400, models.Response{
-// 			Code:    config.ErrorBadRequest,
-// 			Message: "Filename is required",
-// 		})
-// 		return
-// 	}
+// @Router /v1/file/delete [delete]
+// @Summary Delete File from MinIO
+// @Description API for deleting a file from MinIO
+// @Tags upload
+// @Produce  json
+// @Security BearerAuth
+// @Param filename query string true "Filename to delete"
+// @Success 200 {object} models.Response
+// @Failure 400 {object} models.Response "Invalid request"
+// @Failure 500 {object} models.Response "Failed to delete file"
+func (h *handlerV1) DeleteFile(c *gin.Context) {
+	filename := strings.Replace(c.Query("filename"), "minio.taklifnomavip.uz/my-bucket/", "", 1)
+	if filename == "" {
+		c.JSON(400, models.Response{
+			Code:    config.ErrorBadRequest,
+			Message: "Filename is required",
+		})
+		return
+	}
 
-// 	minioClient, err := minio.New(static.MiniOEndpoint, &minio.Options{
-// 		Creds:  credentials.NewStaticV4(static.MiniOAccessKey, static.MiniOSecretKey, ""),
-// 		Secure: static.MiniOProtocol,
-// 	})
-// 	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Failed to create minio client") {
-// 		return
-// 	}
+	minioClient, err := minio.New(static.MiniOEndpoint, &minio.Options{
+		Creds:  credentials.NewStaticV4(static.MiniOAccessKey, static.MiniOSecretKey, ""),
+		Secure: static.MiniOProtocol,
+	})
+	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Failed to create minio client") {
+		return
+	}
 
-// 	_, err = minioClient.StatObject(context.Background(), static.MiniOBucket, filename, minio.StatObjectOptions{})
-// 	if err != nil {
-// 		c.JSON(400, models.Response{
-// 			Code:    config.ErrorBadRequest,
-// 			Message: fmt.Sprintf("File not found in MinIO: %v", err),
-// 		})
-// 		return
-// 	}
+	_, err = minioClient.StatObject(context.Background(), static.MiniOBucket, filename, minio.StatObjectOptions{})
+	if err != nil {
+		c.JSON(400, models.Response{
+			Code:    config.ErrorBadRequest,
+			Message: fmt.Sprintf("File not found in MinIO: %v", err),
+		})
+		return
+	}
 
-// 	err = minioClient.RemoveObject(
-// 		context.Background(),
-// 		static.MiniOBucket,
-// 		strings.Replace(filename, "minio.taklifnomavip.uz/my-bucket/", "", 1),
-// 		minio.RemoveObjectOptions{
-// 			GovernanceBypass: true,
-// 		},
-// 	)
-// 	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Failed to delete file from minio") {
-// 		return
-// 	}
+	err = minioClient.RemoveObject(
+		context.Background(),
+		static.MiniOBucket,
+		strings.Replace(filename, "minio.taklifnomavip.uz/my-bucket/", "", 1),
+		minio.RemoveObjectOptions{
+			GovernanceBypass: true,
+		},
+	)
+	if helpers.HandleGrpcErrWithMessage(c, h.log, err, "Failed to delete file from minio") {
+		return
+	}
 
-// 	c.JSON(200, models.Response{
-// 		Code:    config.StatusSuccess,
-// 		Message: "File deleted successfully",
-// 		Data: map[string]string{
-// 			"deleted_file": filename,
-// 		},
-// 	})
-// }
+	c.JSON(200, models.Response{
+		Code:    config.StatusSuccess,
+		Message: "File deleted successfully",
+		Data: map[string]string{
+			"deleted_file": filename,
+		},
+	})
+}

@@ -74,7 +74,7 @@ func New(opt *RouterOptions) *gin.Engine {
 	fileUpload := v1Group.Group("/file")
 	{
 		fileUpload.POST("/upload", handlerV1.UploadFile)
-		// fileUpload.DELETE("/delete", handlerV1.DeleteFile)
+		fileUpload.DELETE("/delete", handlerV1.DeleteFile)
 	}
 
 	users := v1Group.Group("/users")

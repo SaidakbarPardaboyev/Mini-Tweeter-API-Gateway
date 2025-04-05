@@ -135,6 +135,52 @@ const docTemplate = `{
                 }
             }
         },
+        "/v1/file/delete": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "API for deleting a file from MinIO",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "upload"
+                ],
+                "summary": "Delete File from MinIO",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filename to delete",
+                        "name": "filename",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to delete file",
+                        "schema": {
+                            "$ref": "#/definitions/models.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/v1/file/upload": {
             "post": {
                 "security": [
@@ -209,7 +255,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.User"
+                            "$ref": "#/definitions/models.UpdateUser"
                         }
                     }
                 ],
@@ -331,15 +377,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number {default: 1}",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit number {default: 10}",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",
@@ -570,13 +614,10 @@ const docTemplate = `{
                 }
             }
         },
-        "models.User": {
+        "models.UpdateUser": {
             "type": "object",
             "properties": {
                 "bio": {
-                    "type": "string"
-                },
-                "created_at": {
                     "type": "string"
                 },
                 "id": {
@@ -585,16 +626,13 @@ const docTemplate = `{
                 "name": {
                     "type": "string"
                 },
-                "password_hash": {
+                "password": {
                     "type": "string"
                 },
                 "profile_image": {
                     "type": "string"
                 },
                 "surname": {
-                    "type": "string"
-                },
-                "updated_at": {
                     "type": "string"
                 },
                 "username": {
