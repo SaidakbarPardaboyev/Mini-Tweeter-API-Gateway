@@ -79,6 +79,7 @@ func (h *handlerV1) CreateUser(c *gin.Context) {
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
 		return
 	}
+	fmt.Println("user added to redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,
@@ -127,6 +128,7 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 		if helpers.HandleInternalWithMessage(c, h.log, err, "Error while adding user to redis") {
 			return
 		}
+		fmt.Println("user data added to redis successfully")
 
 		c.JSON(200, models.Response{
 			Code:    config.StatusSuccess,
@@ -145,6 +147,7 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while unmarshaling user data") {
 		return
 	}
+	fmt.Println("got user data from redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,
@@ -160,8 +163,8 @@ func (h *handlerV1) GetUserByID(c *gin.Context) {
 // @Security BearerAuth
 // @Accept  json
 // @Produce  json
-// @Param page query int true "Page number {default: 1}"
-// @Param limit query int true "Limit number {default: 10}"
+// @Param page query int false "Page number {default: 1}"
+// @Param limit query int false "Limit number {default: 10}"
 // @Param search query string false "Search keyword (role, login, fullname, phone, etc.)"
 // @Param sort_by query string false "Sort field"
 // @Param order query string false "Sorting order (asc or desc)"
@@ -304,6 +307,7 @@ func (h *handlerV1) DeleteUser(c *gin.Context) {
 	if helpers.HandleInternalWithMessage(c, h.log, err, "Error while deleting user from redis") {
 		return
 	}
+	fmt.Println("deleted from redis successfully")
 
 	c.JSON(200, models.Response{
 		Code:    config.StatusSuccess,

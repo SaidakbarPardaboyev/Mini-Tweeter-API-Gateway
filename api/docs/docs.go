@@ -377,15 +377,13 @@ const docTemplate = `{
                         "type": "integer",
                         "description": "Page number {default: 1}",
                         "name": "page",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "integer",
                         "description": "Limit number {default: 10}",
                         "name": "limit",
-                        "in": "query",
-                        "required": true
+                        "in": "query"
                     },
                     {
                         "type": "string",

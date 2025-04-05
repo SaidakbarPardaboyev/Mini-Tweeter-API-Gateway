@@ -361,12 +361,10 @@ paths:
       - description: 'Page number {default: 1}'
         in: query
         name: page
-        required: true
         type: integer
       - description: 'Limit number {default: 10}'
         in: query
         name: limit
-        required: true
         type: integer
       - description: Search keyword (role, login, fullname, phone, etc.)
         in: query
