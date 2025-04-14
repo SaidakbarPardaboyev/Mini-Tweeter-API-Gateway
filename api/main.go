@@ -86,6 +86,14 @@ func New(opt *RouterOptions) *gin.Engine {
 		users.DELETE("/:id", handlerV1.DeleteUser)
 	}
 
+	followings := v1Group.Group("/followings")
+	{
+		followings.POST("/follow", handlerV1.Follow)
+		followings.POST("/unfollow", handlerV1.UnFollow)
+		followings.GET("/list-followings", handlerV1.GetListFollowings)
+		followings.GET("/list-followers", handlerV1.GetListFollowers)
+	}
+
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

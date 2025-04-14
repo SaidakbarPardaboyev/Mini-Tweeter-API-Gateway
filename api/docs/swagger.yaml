@@ -14,6 +14,13 @@ definitions:
       username:
         type: string
     type: object
+  models.FollowRequest:
+    properties:
+      follower_id:
+        type: string
+      following_id:
+        type: string
+    type: object
   models.LoginRequest:
     properties:
       password:
@@ -32,6 +39,13 @@ definitions:
         type: string
       data: {}
       message:
+        type: string
+    type: object
+  models.UnFollowRequest:
+    properties:
+      follower_id:
+        type: string
+      following_id:
         type: string
     type: object
   models.UpdateUser:
@@ -196,6 +210,188 @@ paths:
       summary: Upload File to MinIO
       tags:
       - upload
+  /v1/followings/follow:
+    post:
+      consumes:
+      - application/json
+      description: API for follow a user
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.FollowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Follow a user
+      tags:
+      - followings
+  /v1/followings/list-followers:
+    get:
+      consumes:
+      - application/json
+      description: API for getting followers list with pagination and search
+      parameters:
+      - description: user id
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: 'Page number {default: 1}'
+        in: query
+        name: page
+        type: integer
+      - description: 'Limit number {default: 10}'
+        in: query
+        name: limit
+        type: integer
+      - description: Search keyword (name, surname, username, bio, etc.)
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Followers List With Pagination
+      tags:
+      - followings
+  /v1/followings/list-followings:
+    get:
+      consumes:
+      - application/json
+      description: API for getting followings list with pagination and search
+      parameters:
+      - description: user id
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: 'Page number {default: 1}'
+        in: query
+        name: page
+        type: integer
+      - description: 'Limit number {default: 10}'
+        in: query
+        name: limit
+        type: integer
+      - description: Search keyword (name, surname, username, bio, etc.)
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Followings List With Pagination
+      tags:
+      - followings
+  /v1/followings/unfollow:
+    post:
+      consumes:
+      - application/json
+      description: API for unfollow a user
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UnFollowRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: UnFollow a user
+      tags:
+      - followings
   /v1/users:
     post:
       consumes:
