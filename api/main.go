@@ -94,6 +94,25 @@ func New(opt *RouterOptions) *gin.Engine {
 		followings.GET("/list-followers", handlerV1.GetListFollowers)
 	}
 
+	tweets := v1Group.Group("/tweets")
+	{
+		tweets.POST("", handlerV1.CreateTweet)
+		tweets.GET("/list", handlerV1.GetListTweets)
+		tweets.GET("/:id", handlerV1.GetTweetByID)
+		tweets.PUT("", handlerV1.UpdateTweet)
+		tweets.DELETE("/:id", handlerV1.DeleteTweet)
+	}
+
+	tweetMedia := v1Group.Group("/tweet-media")
+	{
+		tweetMedia.POST("", handlerV1.CreateTweetMedia)
+		tweetMedia.GET("/:id", handlerV1.GetTweetMediaByID)
+		tweetMedia.GET("/list", handlerV1.GetListTweetMedia)
+		tweetMedia.PUT("", handlerV1.UpdateTweetMedia)
+		tweetMedia.DELETE("/:tweet_id/:id", handlerV1.DeleteTweetMedia)
+		tweetMedia.DELETE("/tweet/:id", handlerV1.DeleteTweetMediaWithTweetID)
+	}
+
 	url := ginSwagger.URL("swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

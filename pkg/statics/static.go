@@ -12,6 +12,8 @@ var (
 
 	RefreshTokenKeyFormat = "%s user refresh token"
 	UserCacheFormat       = "%s user cache"
+	TweetCacheFormat      = "%s tweet cache"
+	TweetMediaCacheFormat = "%s tweet media cache"
 )
 
 const (
