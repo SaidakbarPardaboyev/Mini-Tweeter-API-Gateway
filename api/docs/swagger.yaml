@@ -1,4 +1,20 @@
 definitions:
+  models.CreateTweet:
+    properties:
+      content:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.CreateTweetMedia:
+    properties:
+      media_type:
+        type: string
+      tweet_id:
+        type: string
+      url:
+        type: string
+    type: object
   models.CreateUser:
     properties:
       bio:
@@ -46,6 +62,26 @@ definitions:
       follower_id:
         type: string
       following_id:
+        type: string
+    type: object
+  models.UpdateTweet:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.UpdateTweetMedia:
+    properties:
+      id:
+        type: string
+      media_type:
+        type: string
+      tweet_id:
+        type: string
+      url:
         type: string
     type: object
   models.UpdateUser:
@@ -392,6 +428,456 @@ paths:
       summary: UnFollow a user
       tags:
       - followings
+  /v1/tweet-media:
+    post:
+      consumes:
+      - application/json
+      description: API for creating tweet Media
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateTweetMedia'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Tweet Media Create
+      tags:
+      - tweet-media
+    put:
+      consumes:
+      - application/json
+      description: API for updating Tweet Media
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateTweetMedia'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Tweet Media Update
+      tags:
+      - tweet-media
+  /v1/tweet-media/{id}:
+    get:
+      consumes:
+      - application/json
+      description: API for getting Tweet Media by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Tweet Media By ID
+      tags:
+      - tweet-media
+  /v1/tweet-media/{tweet_id}/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API for deleting Tweet Media
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: tweet id
+        in: path
+        name: tweet_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete Tweet Media
+      tags:
+      - tweet-media
+  /v1/tweet-media/list:
+    get:
+      consumes:
+      - application/json
+      description: API for getting Tweet Media list with pagination and filters
+      parameters:
+      - description: Tweet ID
+        in: query
+        name: tweet_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Tweet Media List With Pagination
+      tags:
+      - tweet-media
+  /v1/tweet-media/tweet/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API for deleting Tweet Media with tweet id
+      parameters:
+      - description: tweet id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete Tweet Media With Tweet ID
+      tags:
+      - tweet-media
+  /v1/tweets:
+    post:
+      consumes:
+      - application/json
+      description: API for creating tweet
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateTweet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Tweet Create
+      tags:
+      - tweets
+    put:
+      consumes:
+      - application/json
+      description: API for updating Tweet
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateTweet'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Tweet Update
+      tags:
+      - tweets
+  /v1/tweets/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: API for deleting Tweet
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Delete Tweet
+      tags:
+      - tweets
+    get:
+      consumes:
+      - application/json
+      description: API for getting Tweet by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Tweet By ID
+      tags:
+      - tweets
+  /v1/tweets/list:
+    get:
+      consumes:
+      - application/json
+      description: API for getting Tweet list with pagination and filters
+      parameters:
+      - description: 'Page number {default: 1}'
+        in: query
+        name: page
+        type: integer
+      - description: 'Limit number {default: 10}'
+        in: query
+        name: limit
+        type: integer
+      - description: Search keyword (role, login, fullname, phone, etc.)
+        in: query
+        name: search
+        type: string
+      - description: Sort field
+        in: query
+        name: sort_by
+        type: string
+      - description: Sorting order (asc or desc)
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Response'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.Response'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+      security:
+      - BearerAuth: []
+      summary: Get Tweet List With Pagination
+      tags:
+      - tweets
   /v1/users:
     post:
       consumes:
